@@ -1,174 +1,121 @@
 <template>
-  <v-container id="login">
-    <v-row height="100%">
-      <v-col height="100%">
-        <v-card height="100%"
-          flat
-          color="surface-variant"
-          :image="taglineImage"
-          subtitle="Take a walk down the beach"
-          title="Evening sunset"></v-card>
+  <v-container class="login fill-height"
+    fluid>
+    <v-row class="fill-height"
+      no-gutters>
+      <v-col cols="6">
+        <TaglineCard />
       </v-col>
 
-      <v-col>
-        <v-card flat
-          text
-          v-if="isLoginView">
-          <v-card-title>Login</v-card-title>
-          <v-card-text>
-            <v-form @submit.prevent="handleLogin">
-              <v-text-field v-model="email"
-                label="Email"
-                type="email"
-                required
-                outlined
-                clearable />
-              <v-text-field v-model="password"
-                label="Password"
-                type="password"
-                required
-                outlined
-                clearable />
-              <v-btn class="mt-4"
-                color="primary"
-                type="submit"
-                block>
-                Accedi
-              </v-btn>
-            </v-form>
-            <v-alert v-if="error"
-              type="error"
-              class="mt-4"
-              dense>
-              {{ error }}
-            </v-alert>
-          </v-card-text>
-          <v-card-actions>
-            <v-spacer />
-            <v-btn aria-label="Show registration module"
-              @click="isLoginView = !isLoginView"
-              text>Non hai un account? Registrati</v-btn>
-          </v-card-actions>
-        </v-card>
+      <v-col cols="4"
+        offset="1"
+        align-self="center"
+        class="text-text">
+        <h3 class="text-h4">Login</h3>
+        <v-card-text>
+          <v-form @submit.prevent="handleLogin"
+            v-model="formIsValid">
+            <v-row>
+              <v-col cols="12">
+                <v-text-field v-model="email"
+                  label="Email"
+                  type="email"
+                  required
+                  outlined
+                  clearable
+                  :rules="[requiredRule, emailRule]" />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col cols="12">
+                <v-text-field name="password"
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  label="Password"
+                  :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append-inner="showPassword = !showPassword"
+                  outlined
+                  required
+                  clearable
+                  autocomplete
+                  :rules="[requiredRule]" />
+              </v-col>
+            </v-row>
+            <v-row justify="center">
+              <v-col cols="4">
+                <v-btn color="primary"
+                  block
+                  type="submit"
+                  :disabled="!formIsValid">
+                  Accedi
+                </v-btn>
+              </v-col>
+            </v-row>
 
-        <v-card flat
-          text
-          v-else>
-          <v-card-title>Registrazione</v-card-title>
-          <v-card-text>
-            <v-form @submit.prevent="handleRegister">
-              <v-text-field v-model="newEmail"
-                label="Email"
-                type="email"
-                required
-                outlined
-                clearable />
-              <v-text-field v-model="newPassword"
-                label="Password"
-                type="password"
-                required
-                outlined
-                clearable />
-              <v-text-field v-model="confirmNewPassword"
-                label="Conferma Password"
-                type="password"
-                required
-                outlined
-                clearable />
-              <v-btn class="mt-4"
-                color="primary"
-                type="submit"
-                block>
-                Registrati
-              </v-btn>
-            </v-form>
-            <v-alert v-if="registerError"
-              type="error"
-              class="mt-4"
-              dense>
-              {{ registerError }}
-            </v-alert>
-          </v-card-text>
-        </v-card>
+          </v-form>
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <p class="text-body-1">
+            Non hai un account? <RouterLink to="/register">Registrati</RouterLink>
+          </p>
+        </v-card-actions>
       </v-col>
     </v-row>
   </v-container>
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useAuthStore } from '@/stores/auth'
-  import taglineImage from '@/assets/tagline.png'
+  import { defineComponent, ref } from 'vue';
+  import { TaglineCard } from '@/components';
+  import { useRouter } from 'vue-router';
+  import { useUserStore } from '@/stores/user';
+  import { useFeedbackStore } from '@/stores/feedback';
+  import { useValidationRules } from '@/composables';
+  import type { UserType } from '@/types';
 
   export default defineComponent({
+    name: 'UserLogin',
+    components: {
+      TaglineCard
+    },
 
     setup: () => {
-      const email = ref('')
-      const password = ref('')
-      const newEmail = ref('')
-      const newPassword = ref('')
-      const confirmNewPassword = ref('')
-      const error = ref<string | null>(null)
-      const registerError = ref<string | null>(null)
-      const router = useRouter()
-      const auth = useAuthStore()
-      const isLoginView = ref(true);
+      const email = ref('');
+      const password = ref('');
+      const showPassword = ref(false);
+      const { emailRule, requiredRule } = useValidationRules();
+      const formIsValid = ref(false);
 
-      const handleLogin = () => {
-        error.value = null
+      const router = useRouter();
+      const userStore = useUserStore();
+      const feedbackStore = useFeedbackStore();
 
-        const userData = localStorage.getItem(email.value)
-        if (!userData) {
-          error.value = 'Utente non registrato.'
-          return
-        }
-
-        const user = JSON.parse(userData)
-        if (user.password !== password.value) {
-          error.value = 'Password errata.'
-          return
-        }
-
-        localStorage.setItem('loggedInUser', email.value)
-        auth.user = email.value
-        router.push('/')
-      }
-
-      const handleRegister = () => {
-        registerError.value = null
-
-        if (!newEmail.value || !newPassword.value || !confirmNewPassword.value) {
-          registerError.value = 'Tutti i campi sono obbligatori.'
-          return
-        }
-
-        if (newPassword.value !== confirmNewPassword.value) {
-          registerError.value = 'Le password non coincidono.'
-          return
-        }
-
+      const handleLogin = async () => {
         try {
-          auth.register(newEmail.value, newPassword.value)
-          router.push('/')
-        } catch (e) {
-          registerError.value = e.message
+          const payload = {
+            email: email.value,
+            password: password.value
+          } as UserType;
+
+          await userStore.login(payload);
+          feedbackStore.showMessage('Login effettuato con successo', 'success');
+          router.push('/dashboard');
         }
-      }
+        catch (error: any) {
+          feedbackStore.showMessage(error.message);
+        }
+      };
 
-      return { email, password, newEmail, newPassword, error, registerError, handleLogin, handleRegister, taglineImage, isLoginView, confirmNewPassword }
+      return {
+        email,
+        password,
+        showPassword,
+        formIsValid,
+        emailRule,
+        requiredRule,
+        handleLogin
+      };
     }
-  })
+  });
 </script>
-<style lang="scss" scoped>
-  main {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    height: 100vh;
-  }
-
-  .v-card {
-    max-width: 400px;
-    margin: auto;
-  }
-</style>

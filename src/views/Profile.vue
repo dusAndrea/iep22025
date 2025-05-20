@@ -3,7 +3,7 @@
     max-width="500">
     <v-card-title>Profilo Utente</v-card-title>
     <v-card-text>
-      <div><strong>Email:</strong> {{ auth.user }}</div>
+      <div><strong>Email:</strong> {{ userStore.user }}</div>
 
       <v-text-field class="mt-4"
         v-model="newPassword"
@@ -23,41 +23,41 @@
 
 <script lang="ts">
 
-  import { defineComponent, ref, onMounted } from 'vue'
-  import { useRouter } from 'vue-router'
-  import { useAuthStore } from '@/stores/auth'
+  import { defineComponent, ref, onMounted } from 'vue';
+  import { useRouter } from 'vue-router';
+  import { useUserStore } from '@/stores/user';
 
   export default defineComponent({
     name: 'Profile',
     setup() {
-      const router = useRouter()
-      const auth = useAuthStore()
-      const newPassword = ref('')
+      const router = useRouter();
+      const userStore = useUserStore();
+      const newPassword = ref('');
 
       const updatePassword = () => {
-        if (!auth.user) return
+        // if (!auth.user) return
 
-        const user = JSON.parse(localStorage.getItem(auth.user))
-        if (user) {
-          user.password = newPassword.value
-          localStorage.setItem(auth.user, JSON.stringify(user))
-          alert('Password aggiornata')
-          newPassword.value = ''
-        }
-      }
+        // const user = JSON.parse(localStorage.getItem(auth.user))
+        // if (user) {
+        //   user.password = newPassword.value
+        //   localStorage.setItem(auth.user, JSON.stringify(user))
+        //   alert('Password aggiornata')
+        //   newPassword.value = ''
+        // }
+      };
 
       const deleteAccount = () => {
-        if (!auth.user) return
+        // if (!auth.user) return
 
-        if (confirm('Sei sicuro di voler eliminare il tuo account?')) {
-          localStorage.removeItem(auth.user)
-          localStorage.removeItem('loggedInUser')
-          auth.logout()
-          alert('Account eliminato')
-          router.push('/register')
-        }
-      }
-      return { updatePassword, deleteAccount, newPassword, auth }
+        // if (confirm('Sei sicuro di voler eliminare il tuo account?')) {
+        //   localStorage.removeItem(auth.user)
+        //   localStorage.removeItem('loggedInUser')
+        //   auth.logout()
+        //   alert('Account eliminato')
+        //   router.push('/register')
+        // }
+      };
+      return { updatePassword, deleteAccount, newPassword, userStore };
     }
   })
 

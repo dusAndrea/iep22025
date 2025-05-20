@@ -1,1 +1,0 @@
-// Component code placeholder

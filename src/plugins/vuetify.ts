@@ -1,39 +1,41 @@
 // src/plugins/vuetify.js
-import 'vuetify/styles'
-import { createVuetify } from 'vuetify'
-import { aliases, mdi } from 'vuetify/iconsets/mdi'
-import '@mdi/font/css/materialdesignicons.css'
-import { md3 } from 'vuetify/blueprints'
+import 'vuetify/styles';
+import { createVuetify } from 'vuetify';
+import { aliases, mdi } from 'vuetify/iconsets/mdi';
+import '@mdi/font/css/materialdesignicons.css';
+import { md3 } from 'vuetify/blueprints';
 
 const sustainabilityTheme = {
   dark: false,
   colors: {
-    background: '#F5FBEF',     // Verde chiarissimo
+    background: '#F5FBEF',  // Verde chiarissimo
     surface: '#FFFFFF',
-    primary: '#4CAF50',        // Verde sostenibile
-    secondary: '#8BC34A',      // Verde più chiaro
-    accent: '#009688',         // Blu acqua
+    primary: '#A0D1A2',     // Verde sostenibile
+    secondary: '#8BC34A',   // Verde più chiaro
+    accent: '#009688',      // Blu acqua
     info: '#4DD0E1',
     warning: '#FFC107',
     error: '#FF5252',
     success: '#388E3C',
+    text: '#034a43'
   }
-}
+};
 
 const sustainabilityDarkTheme = {
   dark: true,
   colors: {
-    background: '#1E1E1E',
-    surface: '#2E2E2E',
-    primary: '#81C784',
-    secondary: '#A5D6A7',
-    accent: '#26A69A',
-    info: '#80DEEA',
-    warning: '#FFB300',
+    background: '#121212',
+    surface: '#1E1E1E',
+    primary: '#81C784',     // verde soft ma visibile su sfondo scuro
+    secondary: '#AED581',   // verde lime più chiaro
+    accent: '#26A69A',      // teal intenso per accent
+    info: '#4DD0E1',
+    warning: '#FFC107',
     error: '#EF5350',
     success: '#66BB6A',
+    text: '#E0F2F1'         // quasi bianco con leggero tono verde acqua
   }
-}
+};
 
 export default createVuetify({
   blueprint: md3,
@@ -51,4 +53,4 @@ export default createVuetify({
       mdi,
     },
   },
-})
+});

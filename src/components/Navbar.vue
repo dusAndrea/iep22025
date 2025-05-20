@@ -1,20 +1,19 @@
 <template>
+
   <v-app-bar app
-    color="primary"
+    color="background"
     dark
-    elevation="6">
-    <v-app-bar-nav-icon></v-app-bar-nav-icon>
+    :collaspe="true"
+    flat>
+
+    <v-app-bar-nav-icon />
 
     <v-toolbar-title class="text-h6 font-weight-bold">
-      <v-img :width="300"
+      <v-img :width="60"
         aspect-ratio="16/9"
         cover
-        src="@/assets/logo.png" />
-      <img alt="Vue logo"
-        class="logo"
-        src="@/assets/logo.png"
-        width="125"
-        height="125" />
+        :src="pictoImage" />
+
     </v-toolbar-title>
 
     <v-spacer />
@@ -36,19 +35,33 @@
       hide-details
       :label="isDark ? 'Dark' : 'Light'"></v-switch>
     <v-icon class="ml-2">mdi-weather-night</v-icon>
+
   </v-app-bar>
+
 </template>
 
-<script setup>
-  import { useTheme } from 'vuetify'
-  import { ref, watch } from 'vue'
+<script lang="ts">
+  import { useTheme } from 'vuetify';
+  import { ref, watch, defineComponent } from 'vue';
+  import pictoImage from '@/assets/pittogramma.png';
 
-  const theme = useTheme()
-  const isDark = ref(theme.global.current.value === 'sustainabilityDarkTheme')
+  export default defineComponent({
+    setup() {
+      const theme = useTheme();
+      const isDark = ref(theme.global.current.value === 'sustainabilityDarkTheme');
 
-  watch(isDark, (val) => {
-    theme.global.name.value = val ? 'sustainabilityDarkTheme' : 'sustainabilityTheme'
+      watch(isDark, (val) => {
+        theme.global.name.value = val ? 'sustainabilityDarkTheme' : 'sustainabilityTheme';
+      });
+
+      return {
+        pictoImage,
+        isDark
+      };
+    }
   })
+
+
 </script>
 
 <style scoped>
