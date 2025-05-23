@@ -6,7 +6,7 @@
     class="fill-height tagline-card">
     <div class="fill-height d-flex flex-column justify-space-around align-center">
       <h1 class="text-text text-h1 font-weight-bold">Gaia Data</h1>
-      <h3 class="text-text text-h3">Ogni numero fa testo</h3>
+      <h2 class="text-white text-h2 font-weight-black">Ogni numero fa testo</h2>
     </div>
   </v-card>
 </template>
@@ -25,7 +25,7 @@
     }
   });
 </script>
-<style lang="scss">
+<style lang="scss" scoped>
 .tagline-card {
   img {
     filter: opacity(0.3);

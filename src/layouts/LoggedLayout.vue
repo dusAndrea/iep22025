@@ -1,5 +1,19 @@
 <template>
-  <router-view />
+  <v-app :full-height="true">
+    <GlobalSnackbar />
+    <Navbar />
+
+    <v-main :scrollable="true">
+      <v-container fluid>
+        <v-row>
+          <v-col cols="10"
+            offset="1">
+            <RouterView />
+          </v-col>
+        </v-row>
+      </v-container>
+    </v-main>
+  </v-app>
 </template>
 <script lang="ts">
   import { RouterView } from 'vue-router';

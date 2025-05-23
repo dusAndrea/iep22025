@@ -1,38 +1,137 @@
 <template>
-  <v-card class="pa-4 mx-auto"
-    max-width="500">
-    <v-card-title>Profilo Utente</v-card-title>
-    <v-card-text>
-      <div><strong>Email:</strong> {{ userStore.user }}</div>
+  <v-row>
+    <v-col cols="12">
+      <h1 class="text-text">Il tuo profilo utente</h1>
+      <h3 class="text-primary">Aggiorna i tuoi dati</h3>
+    </v-col>
+  </v-row>
+  <v-row>
+    <v-col>
+      <v-card class="pa-4 mx-auto">
+        <v-card-text>
+          <v-form @submit.prevent="handleUpdate"
+            v-model="formIsValid">
+            <v-row>
+              <v-col>
+                <v-text-field v-model="firstName"
+                  label="Nome"
+                  outlined
+                  readonly />
+              </v-col>
+              <v-col>
+                <v-text-field v-model="lastName"
+                  label="Cognome"
+                  outlined
+                  readonly />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col>
+                <v-text-field v-model="email"
+                  label="Inserisci una nuova Email"
+                  type="email"
+                  required
+                  outlined
+                  clearable
+                  :rules="[requiredRule, emailRule]" />
+              </v-col>
+              <v-col>
+                <v-text-field v-model="confirmEmail"
+                  label="Conferma la nuova Email"
+                  type="email"
+                  required
+                  outlined
+                  clearable
+                  :rules="[requiredRule, emailRule, matchRule(email)]" />
+              </v-col>
+            </v-row>
 
-      <v-text-field class="mt-4"
-        v-model="newPassword"
-        label="Nuova password"
-        type="password"
-        outlined />
+            <v-row>
+              <v-col>
+                <v-text-field name="password"
+                  id="password"
+                  v-model="password"
+                  :type="showPassword ? 'text' : 'password'"
+                  label="Inserisci una nuova Password"
+                  :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append-inner="showPassword = !showPassword"
+                  required
+                  outlined
+                  clearable
+                  autocomplete />
+              </v-col>
+              <v-col>
+                <v-text-field name="confirmPassword"
+                  id="confirmPassword"
+                  v-model="confirmPassword"
+                  label="Conferma la nuova Password"
+                  :type="showConfirmPassword ? 'text' : 'password'"
+                  :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
+                  @click:append-inner="showConfirmPassword = !showConfirmPassword"
+                  required
+                  outlined
+                  clearable
+                  autocomplete
+                  :rules="[matchRule(password)]" />
+              </v-col>
+            </v-row>
+            <v-row>
+              <v-col class="d-flex justify-space-between">
+                <v-btn color="red"
+                  variant="text"
+                  @click="deleteAccount">Elimina Account</v-btn>
 
-      <v-btn class="mt-2"
-        color="primary"
-        @click="updatePassword">Aggiorna Password</v-btn>
-      <v-btn class="mt-2 ml-4"
-        color="red"
-        @click="deleteAccount">Elimina Account</v-btn>
-    </v-card-text>
-  </v-card>
+                <v-btn color="primary"
+                  class="ml-a"
+                  @click="updatePassword"
+                  :disabled="!formIsValid">Aggiorna i tuoi dati</v-btn>
+              </v-col>
+            </v-row>
+          </v-form>
+        </v-card-text>
+      </v-card>
+    </v-col>
+  </v-row>
 </template>
 
 <script lang="ts">
-
   import { defineComponent, ref, onMounted } from 'vue';
-  import { useRouter } from 'vue-router';
   import { useUserStore } from '@/stores/user';
+  import { useMessagesStore } from '@/stores/messages';
+  import { useValidationRules } from '@/composables';
 
   export default defineComponent({
     name: 'Profile',
     setup() {
-      const router = useRouter();
       const userStore = useUserStore();
-      const newPassword = ref('');
+      const messagesStore = useMessagesStore();
+      const showPassword = ref(false);
+      const showConfirmPassword = ref(false);
+      const firstName = ref(userStore.user?.firstName);
+      const lastName = ref(userStore.user?.lastName);
+      const email = ref(userStore.user?.email);
+      const confirmEmail = ref(userStore.user?.email);
+      const password = ref('');
+      const confirmPassword = ref('');
+      const error = ref<string | null>(null);
+      const { emailRule, requiredRule, matchRule } = useValidationRules();
+
+      const formIsValid = ref(false);
+
+      const handleUpdate = async () => {
+        // try {
+        //   const payload = {
+        //     email: email.value,
+        //     password: password.value
+        //   } as UserType;
+
+        //   await userStore.login(payload);
+        //   messagesStore.showMessage('Login effettuato con successo', 'success');
+        // }
+        // catch (error: any) {
+        //   messagesStore.showMessage(error.message);
+        // }
+      };
 
       const updatePassword = () => {
         // if (!auth.user) return
@@ -57,7 +156,28 @@
         //   router.push('/register')
         // }
       };
-      return { updatePassword, deleteAccount, newPassword, userStore };
+      return {
+        showPassword,
+        showConfirmPassword,
+        firstName,
+        lastName,
+        email,
+        confirmEmail,
+        password,
+        confirmPassword,
+        error,
+        emailRule,
+        requiredRule,
+        matchRule,
+        updatePassword,
+        deleteAccount,
+        userStore,
+        handleUpdate,
+        formIsValid,
+
+
+
+      };
     }
   })
 

@@ -1,15 +1,9 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
-  </div>
-</template>
+  <v-row>
+    <v-col cols="12">
+      <h1 class="text-text">About</h1>
+      <h3 class="text-primary">Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia accusamus sint sequi blanditiis dolorum culpa hic, eveniet natus veritatis ipsam nostrum cumque, nam facere adipisci. Maxime voluptates non cupiditate? Sunt?</h3>
+    </v-col>
+  </v-row>
 
-<style>
-  @media (min-width: 1024px) {
-    .about {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-    }
-  }
-</style>
+</template>

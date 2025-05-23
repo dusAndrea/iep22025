@@ -1,14 +1,14 @@
 <template>
-  <v-snackbar v-model="feedbackStore.show"
-    :timeout="feedbackStore.timeout"
-    :color="feedbackStore.color"
+  <v-snackbar v-model="messagesStore.show"
+    :timeout="messagesStore.timeout"
+    :color="messagesStore.color"
     location="top right"
     multi-line
     position="fixed">
-    {{ feedbackStore.message }}
+    {{ messagesStore.message }}
     <template #actions>
       <v-btn icon
-        @click="feedbackStore.close">
+        @click="messagesStore.close">
         <v-icon>mdi-close</v-icon>
       </v-btn>
     </template>
@@ -16,15 +16,15 @@
 </template>
 
 <script lang="ts">
-  import { useFeedbackStore } from '@/stores/feedback';
+  import { useMessagesStore } from '@/stores/messages';
   import { defineComponent } from 'vue';
 
   export default defineComponent({
     setup() {
-      const feedbackStore = useFeedbackStore();
+      const messagesStore = useMessagesStore();
 
       return {
-        feedbackStore,
+        messagesStore,
       };
     }
   })

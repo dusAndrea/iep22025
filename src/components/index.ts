@@ -1,15 +1,15 @@
-import BarChart from "./BarChart.vue";
-import CO2Calculator from "./CO2Calculator.vue";
+import { ClimateClock } from "./cards/ClimateClock";
+import { CO2Calculator } from "./cards/CO2";
+import { GaiaFeed } from "./cards/GaiaFeed";
 import GlobalSnackbar from "./GlobalSnackbar.vue";
-import LineChart from "./LineChart.vue";
 import Navbar from "./Navbar.vue";
-import TaglineCard from "./TaglineCard.vue";
+import TagLineCard from './TagLineCard.vue';
 
 export {
-  BarChart,
+  ClimateClock,
   CO2Calculator,
+  GaiaFeed,
   GlobalSnackbar,
-  LineChart,
   Navbar,
-  TaglineCard,
+  TagLineCard
 };

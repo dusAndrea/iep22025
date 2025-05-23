@@ -4,6 +4,7 @@ import { createVuetify } from 'vuetify';
 import { aliases, mdi } from 'vuetify/iconsets/mdi';
 import '@mdi/font/css/materialdesignicons.css';
 import { md3 } from 'vuetify/blueprints';
+import { VIconBtn } from 'vuetify/labs/VIconBtn';
 
 const sustainabilityTheme = {
   dark: false,
@@ -18,7 +19,9 @@ const sustainabilityTheme = {
     error: '#FF5252',
     success: '#388E3C',
     text: '#034a43'
-  }
+  },
+  lighten: 5,
+  darken: 5,
 };
 
 const sustainabilityDarkTheme = {
@@ -34,7 +37,9 @@ const sustainabilityDarkTheme = {
     error: '#EF5350',
     success: '#66BB6A',
     text: '#E0F2F1'         // quasi bianco con leggero tono verde acqua
-  }
+  },
+  lighten: 5,
+  darken: 5,
 };
 
 export default createVuetify({
@@ -53,4 +58,7 @@ export default createVuetify({
       mdi,
     },
   },
+  components: {
+    VIconBtn
+  }
 });

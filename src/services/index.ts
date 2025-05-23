@@ -1,3 +1,2 @@
-export * from './api';
-export * from './firebaseServices'
-
+export * from './climateClockServices';
+export * from './firebaseServices';

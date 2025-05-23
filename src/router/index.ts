@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
-import { About, DashBoard, Login, NotFound, Profile, Register } from '@/views';
+import { LoggedLayout, UnloggedLayout } from '@/layouts';
+import { About, DashBoard, Login, NotFound, Profile, Quiz, Register } from '@/views';
 import { useUserStore } from '@/stores';
 
 const router = createRouter({
@@ -7,44 +8,57 @@ const router = createRouter({
   routes: [
     {
       path: '/',
-      name: 'home',
-      component: Login,
-      meta: { requiresAuth: false }
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: Login,
-      meta: { requiresAuth: false }
-    },
-    {
-      path: '/register',
-      name: 'register',
-      component: Register,
-      meta: { requiresAuth: false }
-    },
-    {
-      path: '/about',
-      name: 'about',
-      component: About,
-      meta: { requiresAuth: false }
-    },
+      component: LoggedLayout,
+      meta: { requiresAuth: true },
+      children: [
+        {
+          path: '',
+          name: 'Home',
+          component: DashBoard,
+        },
+        {
+          path: "/dashboard",
+          name: "Dashboard",
+          component: DashBoard,
+        },
+        {
+          path: "/quiz",
+          name: "Quiz",
+          component: Quiz,
+        },
+        {
+          path: "/profile",
+          name: "Profile",
+          component: Profile,
+        },
+        {
+          path: '/about',
+          name: 'About',
+          component: About,
 
-    {
-      path: "/profile",
-      name: "Profile",
-      component: Profile,
-      meta: { requiresAuth: true }
+        },
+      ]
     },
     {
-      path: "/dashboard",
-      name: "Dashboard",
-      component: DashBoard,
-      meta: { requiresAuth: true }
+      path: '/',
+      component: UnloggedLayout,
+      meta: { requiresAuth: false },
+      children: [
+        {
+          path: '/login',
+          name: 'login',
+          component: Login,
+        },
+        {
+          path: '/register',
+          name: 'Register',
+          component: Register,
+        },
+      ]
     },
     {
       path: '/:pathMatch(.*)*',
-      name: 'notfound',
+      name: 'NotFound',
       component: NotFound
     }
   ],
@@ -55,9 +69,8 @@ router.beforeEach((to, from, next) => {
   const isLoggedIn = userStore.isLoggedIn;
 
   if (to.meta.requiresAuth && !isLoggedIn) {
-    next("/login");
-  }
-  else if ((to.name === 'login' || to.name === 'register') && isLoggedIn) {
+    next('/login');
+  } else if ((to.name === 'login' || to.name === 'register') && isLoggedIn) {
     next('/dashboard');
   } else {
     next();

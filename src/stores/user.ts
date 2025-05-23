@@ -31,10 +31,6 @@ export const useUserStore = defineStore('user', {
       this.user = null;
     },
 
-    loadUser() {
-
-    },
-
     async login(user: UserType): Promise<void> {
 
       const q = query(collection(db, 'users'),
@@ -48,10 +44,8 @@ export const useUserStore = defineStore('user', {
       }
 
       const userDoc = querySnapshot.docs[0];
-      console.log('userDoc.data', userDoc.data());
 
       this.user = userDoc.data() as UserType;
-      console.log('this.user', this.user);
     }
   },
 });

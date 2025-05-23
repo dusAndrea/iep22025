@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-export const useFeedbackStore = defineStore('feedback', {
+export const useMessagesStore = defineStore('messages', {
   state: () => ({
     message: '',
     show: false,

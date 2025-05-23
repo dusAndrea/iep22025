@@ -1,14 +1,8 @@
 <template>
-  <v-card outlined
-    title="Emissioni di CO₂"
-    class="pa-4">
-    <template v-slot:prepend>
-      <v-icon>mdi-sprout-outline</v-icon>
-    </template>
-
-    <v-card-text>
+  <DefaultCardWrapper :title="title"
+    :subtitle="subtitle">
+    <template #cardContent>
       <v-container fluid>
-        <v-row><v-col>In questa card puoi calcolare quanta .</v-col></v-row>
         <v-row>
           <v-col>
             <v-autocomplete v-model="startQuery"
@@ -55,43 +49,23 @@
               label="Che dimensioni ha la tua auto?"
               outlined />
           </v-col>
+        </v-row>
+
+        <v-row>
           <v-col>
-            <v-dialog>
-              <template v-slot:activator="{ props: activatorProps }">
-                <v-btn variant="plain"
-                  v-bind="activatorProps"
-                  text="non sai quale auto?"></v-btn>
-              </template>
+            <CO2CarsDialog />
+          </v-col>
 
-              <template v-slot:default="{ isActive }">
-                <v-card title="Esempi di aiuto e relativi consumi">
-                  <v-card-text>
-                    <v-data-table v-if="showCarHelp"
-                      :items="tableItems"
-                      hide-default-footer></v-data-table>
-                  </v-card-text>
-
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-
-                    <v-btn text="Chiudi"
-                      @click="isActive.value = false"></v-btn>
-                  </v-card-actions>
-                </v-card>
-              </template>
-            </v-dialog>
+          <v-col class="d-flex justify-end">
+            <v-btn color="primary"
+              :disabled="!startQuery || !endQuery"
+              :loading="loadingStart || loadingEnd"
+              @click="calculateEmissions">
+              Calcola
+            </v-btn>
           </v-col>
         </v-row>
       </v-container>
-
-
-      <v-btn color="primary"
-        :disabled="!startQuery || !endQuery"
-        :loading="loadingStart || loadingEnd"
-        class="mt-3"
-        @click="calculateEmissions">
-        Calcola
-      </v-btn>
 
       <v-alert v-if="result"
         type="info"
@@ -107,17 +81,33 @@
         class="mt-4">
         {{ error }}
       </v-alert>
-    </v-card-text>
-  </v-card>
+    </template>
+  </DefaultCardWrapper>
 </template>
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
   import axios from 'axios';
   import debounce from 'lodash.debounce';
+  import CO2CarsDialog from './CO2CarsDialog.vue';
+  import DefaultCardWrapper from '../DefaultCardWrapper.vue';
 
   export default defineComponent({
-    name: 'EmissionCalculator',
+    name: 'CO2Calculator',
+    components: {
+      DefaultCardWrapper,
+      CO2CarsDialog
+    },
+    props: {
+      title: {
+        type: String,
+        required: true
+      },
+      subtitle: {
+        type: String,
+        required: true
+      }
+    },
     setup() {
       const startQuery = ref('');
       const endQuery = ref('');
@@ -127,30 +117,6 @@
       const loadingEnd = ref(false);
       const result = ref(null);
       const error = ref('');
-
-      const tableItems = [
-        {
-          dimensione: 'Piccola',
-          benzina: "Motore inferiore a 1,4 litri",
-          diesel: "Motore inferiore a 1,7 litri",
-          altri: "Auto di segmento A e B",
-          esempio: "Fiat 500, Opel Adam, Renault Clio, Ford Fiesta etc."
-        },
-        {
-          dimensione: 'Media',
-          benzina: "Motore da 1,4 a 2,0 litri",
-          diesel: "Motore da 1,7 a 2,0 litri",
-          altri: "Auto di segmento C",
-          esempio: "Volkswagen Golf, Honda Civic etc."
-        },
-        {
-          dimensione: 'Grande',
-          benzina: "Motore da 2,0 litri",
-          diesel: "Motore da 2,0 litri",
-          altri: "Auto di segmento D",
-          esempio: "BMW 3-Series, Volkswagen Passat etc."
-        }
-      ];
 
       const startController = ref<AbortController | null>(null);
       const endController = ref<AbortController | null>(null);
@@ -182,9 +148,6 @@
         { title: 'Elettrica', value: 'battery' }
       ];
 
-
-      const showCarHelp = ref(false);
-
       const searchPlaces = async (query: string, controllerRef, suggestionsRef, loadingRef) => {
         if (query.length < 3) return;
 
@@ -213,7 +176,6 @@
           loadingRef.value = false;
         }
       };
-
 
       const debouncedStartSearch = debounce((q) =>
         searchPlaces(q, startController, startSuggestions, loadingStart), 400);
@@ -281,17 +243,12 @@
         carSize,
         carSizeChoice,
         carType,
-        showCarHelp,
         handleStartSearch,
         handleEndSearch,
         calculateEmissions,
         result,
         error,
-        tableItems,
       };
     }
   });
 </script>
-<style lang="scss" scoped>
-
-</style>

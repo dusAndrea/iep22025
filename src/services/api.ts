@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useFeedbackStore } from "@/stores";
+import { useMessagesStore } from "@/stores";
 
 // CUSTOM APIKEY FROM https://openweathermap.org
 const WEATHER_API_KEY = '567fec87388f2edfbd853e588c877b20';
@@ -15,7 +15,7 @@ const OPENROUTESERVICE_API_KEY = '5b3ce3597851110001cf6248350a055ef9cd402b906676
 const CLIMATIQ_API_KEY = 'K6KQHH1NGN65Q4EA01P6DWN7YG';
 
 export async function fetchCarbonIntensity() {
-  const feedbackStore = useFeedbackStore();
+  const feedbackStore = useMessagesStore();
 
   try {
     // const res = await fetch(CARBON_API_URL)
@@ -34,7 +34,7 @@ export async function fetchCarbonIntensity() {
 }
 
 export async function fetchWeatherData() {
-  const feedbackStore = useFeedbackStore();
+  const feedbackStore = useMessagesStore();
 
   try {
     // const res = await fetch(WEATHER_API_URL)
