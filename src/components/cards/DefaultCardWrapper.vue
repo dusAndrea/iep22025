@@ -3,7 +3,7 @@
     :title="title"
     :color="color"
     :flat="flat"
-    class="fill-height pa-2">
+    class="fill-height">
     <v-card-subtitle class="text-text">{{ subtitle }}</v-card-subtitle>
     <template v-slot:prepend>
       <v-icon size="x-large"

@@ -1,5 +1,6 @@
 <template>
   <v-app :full-height="true">
+    <GlobalSnackbar />
     <v-main :scrollable="true">
       <v-container fluid
         class="login fill-height">
@@ -21,12 +22,13 @@
 <script lang="ts">
   import { RouterView } from 'vue-router';
   import { defineComponent } from 'vue';
-  import { TagLineCard } from '@/components';
+  import { TagLineCard, GlobalSnackbar } from '@/components';
   export default defineComponent({
     name: 'App',
     components: {
       RouterView,
-      TagLineCard
+      TagLineCard,
+      GlobalSnackbar
     },
   });
 </script>

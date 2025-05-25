@@ -1,7 +1,6 @@
 export function useValidationRules() {
   const emailRule = (value: string): true | string => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
     return emailRegex.test(value) || 'Inserisci un indirizzo email valido';
   };
 
@@ -15,9 +14,14 @@ export function useValidationRules() {
     };
   };
 
+  const minLength = (value: string) => {
+    return value.length >= 6 || 'Minimo 6 caratteri ';
+  };
+
   return {
     emailRule,
     requiredRule,
-    matchRule
+    matchRule,
+    minLength
   };
 }

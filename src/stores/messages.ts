@@ -11,7 +11,7 @@ export const useMessagesStore = defineStore('messages', {
     getTimeout: state => state.timeout
   },
   actions: {
-    showMessage(message: string, color: 'error' | 'warning' | 'info' | 'success' = 'info', timeout = 4000) {
+    showMessage(message: string, color: 'error' | 'warning' | 'info' | 'success', timeout = 4000) {
       this.message = message;
       this.color = color;
       this.show = true;

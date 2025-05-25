@@ -1,8 +1,10 @@
 export interface UserType {
+  id: string,
   firstName: string;
   lastName: string;
   email: string;
   password: string;
+  displayName: string;
 }
 
 export interface FeedType {

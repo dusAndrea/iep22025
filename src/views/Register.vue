@@ -19,6 +19,7 @@
           <v-col>
             <v-text-field v-model="firstName"
               label="Nome"
+              type="text"
               required
               outlined
               clearable
@@ -27,6 +28,7 @@
           <v-col>
             <v-text-field v-model="lastName"
               label="Cognome"
+              type="text"
               required
               outlined
               clearable
@@ -68,7 +70,7 @@
               outlined
               clearable
               autocomplete
-              :rules="[requiredRule]" />
+              :rules="[requiredRule, minLength]" />
           </v-col>
           <v-col>
             <v-text-field name="confirmPassword"
@@ -82,7 +84,7 @@
               outlined
               clearable
               autocomplete
-              :rules="[requiredRule, matchRule(password)]" />
+              :rules="[requiredRule, minLength, matchRule(password)]" />
           </v-col>
         </v-row>
         <v-row justify="center">
@@ -90,6 +92,7 @@
             <v-btn block
               color="primary"
               type="submit"
+              :loading="loading"
               :disabled="!formIsValid">
               Registrati
             </v-btn>
@@ -102,18 +105,16 @@
 
 <script lang="ts">
   import { defineComponent, ref } from 'vue';
-  import { TagLineCard } from '@/components';
   import { useUserStore } from '@/stores/user';
   import { useRouter } from 'vue-router';
   import taglineImage from '@/assets/tagline_opacity.png';
   import { useMessagesStore } from '@/stores/messages';
   import { storeToRefs } from 'pinia';
   import { useValidationRules } from '@/composables';
+  import type { UserType } from '@/types';
+
   export default defineComponent({
     name: 'UserRegister',
-    components: {
-      TagLineCard
-    },
     setup: () => {
       const showPassword = ref(false);
       const showConfirmPassword = ref(false);
@@ -125,24 +126,26 @@
       const confirmPassword = ref('');
       const error = ref<string | null>(null);
       const userStore = useUserStore();
-      const feedbackStore = useMessagesStore();
-      const { getTimeout } = storeToRefs(feedbackStore);
+      const messagesStore = useMessagesStore();
+      const { getTimeout } = storeToRefs(messagesStore);
       const router = useRouter();
-      const { emailRule, requiredRule, matchRule } = useValidationRules();
+      const { emailRule, requiredRule, minLength, matchRule } = useValidationRules();
       const formIsValid = ref(false);
+      const loading = ref(false);
 
       const handleRegister = async () => {
         try {
+          loading.value = true;
           const payload = {
             firstName: firstName.value,
             lastName: lastName.value,
             email: email.value,
             password: password.value
-          };
+          } as UserType;
 
           await userStore.register(payload);
 
-          feedbackStore.showMessage('Utente creato con successo', 'success');
+          messagesStore.showMessage('Utente creato con successo', 'success');
 
           setTimeout(() => {
             // redirect to home page after successful registration
@@ -150,7 +153,9 @@
           }, getTimeout.value);
 
         } catch (e: any) {
-          feedbackStore.showMessage(e.message);
+          messagesStore.showMessage(e.message, 'error');
+        } finally {
+          loading.value = false;
         }
       };
 
@@ -161,8 +166,10 @@
         lastName,
         email,
         confirmEmail,
+        loading,
         emailRule,
         requiredRule,
+        minLength,
         matchRule,
         password,
         confirmPassword,

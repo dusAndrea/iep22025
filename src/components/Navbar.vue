@@ -10,6 +10,7 @@
       <v-app-bar-nav-icon @click="drawer = !drawer"
         class="d-md-none" />
 
+      <v-spacer class="d-block d-lg-none" />
 
       <RouterLink to="/">
         <v-img :width="140"
@@ -19,6 +20,7 @@
       </RouterLink>
 
       <v-spacer />
+
       <!-- Desktop Links -->
       <div class="d-none d-md-flex mx-auto">
         <v-btn v-for="link in links"
@@ -30,28 +32,29 @@
           :class="{ 'active-link': route.path === link.to }"
           variant="text">
           <v-icon start
-            :style="{ color: link.color }">{{ link.icon }}</v-icon>
+            :color="link.color">{{ link.icon }}</v-icon>
           {{ link.text }}
         </v-btn>
       </div>
 
-      <v-spacer />
+      <v-spacer class="d-none d-lg-block" />
 
-      <v-icon class="mr-2">mdi-white-balance-sunny</v-icon>
-
-      <v-switch v-model="isDark"
-        color="secondary"
-        inset
-        hide-details
-        :label="isDark ? 'Dark' : 'Light'"></v-switch>
-      <v-icon class="ml-2">mdi-weather-night</v-icon>
+      <!-- Desktop Toggle Theme -->
+      <DesktopToggle :isDark="isDark"
+        @toggleEvent="toggleTheme()" />
 
       <v-divider inset
         length="60px"
-        class="mx-4 my-auto"
+        class="mx-4 my-auto d-none d-lg-flex"
         vertical></v-divider>
 
-      <v-icon-btn icon="mdi-logout"
+      <v-avatar color="red"
+        class="ml-4 ml-lg-0">
+        <span class="text-body">{{ shorDisplayName }}</span>
+      </v-avatar>
+
+      <v-icon-btn class="d-none d-lg-flex"
+        icon="mdi-logout"
         size="large"
         variant="text"
         @click="logout" />
@@ -68,39 +71,62 @@
           router
           exact
           :class="{ 'active-link': route.path === link.to }">
-          <v-list-item-icon>
-            <v-icon :style="{ color: link.color }">{{ link.icon }}</v-icon>
-          </v-list-item-icon>
-          <v-list-item-title>{{ link.text }}</v-list-item-title>
+
+          <v-list-item-title>
+            <v-list-item-icon>
+              <v-icon :style="{ color: link.color }">{{ link.icon }}</v-icon>
+            </v-list-item-icon>
+            {{ link.text }}
+          </v-list-item-title>
+        </v-list-item>
+
+        <v-divider />
+
+        <v-list-item>
+          <v-list-item-title>
+            <v-list-item-icon>
+              <v-icon-btn icon="mdi-logout"
+                variant="text"
+                @click="logout" />
+              Logout
+            </v-list-item-icon>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-navigation-drawer>
+    <MobileToggle :isDark="isDark"
+      @toggleEvent="toggleTheme()" />
   </template>
-  <template v-else></template>
 </template>
 
 <script lang="ts">
   import { useTheme } from 'vuetify';
-  import { ref, watch, defineComponent } from 'vue';
+  import { ref, defineComponent, computed } from 'vue';
   import lightLogo from '@/assets/logo_nobg_light.png';
-  import darkLogo from '@/assets/logo_nobg_light.png';
+  import darkLogo from '@/assets/logo_nobg_dark.png';
   import { useUserStore, useFeedsStore } from '@/stores';
   import { storeToRefs } from 'pinia';
   import { useRouter } from 'vue-router';
   import { useRoute } from 'vue-router';
+  import { DesktopToggle, MobileToggle } from './DarkLightToggleTheme';
+
   export default defineComponent({
+    components: {
+      DesktopToggle,
+      MobileToggle
+    },
     setup() {
       const theme = useTheme();
-      const isDark = ref(theme.global.current.value === 'sustainabilityDarkTheme');
       const userStore = useUserStore();
       const { isLoggedIn } = storeToRefs(userStore);
       const router = useRouter();
       const route = useRoute();
-
       const feedsStore = useFeedsStore();
       const drawer = ref(false);
+      const { displayName } = storeToRefs(userStore);
+      // TODO: controllare modalità responsive
 
-      const links = [
+      const links = computed(() => [
         // {
         //   to: '/',
         //   text: 'Home',
@@ -112,19 +138,21 @@
             '/quiz',
           text: 'Quiz',
           icon: 'mdi-help-circle-outline',
-          color: '#FF5722'
+          color: isDark.value ? 'accent' : 'accent',
         },
         {
           to: '/profile',
           text: 'Profile',
           icon: 'mdi-account-circle',
-          color: '#E91E63'
+          color: isDark.value ? 'accent' : 'accent',
         },
         // {
         //   to: '/news',
         //   text: 'News',
         //   icon: 'mdi-newspaper-variant-outline',
-        //   color: '#2196F3', // Blu
+        //   color: isDark.value ? 'secondary' : 'secondary',
+
+
         // },
         // {
         //   to: '/analytics',
@@ -142,12 +170,21 @@
           to: '/about',
           text: 'About',
           icon: 'mdi-information-outline',
-          color: '#00BCD4', // Azzurro
+          color: isDark.value ? 'primary' : 'primary',
         },
-      ];
+      ]);
 
+      const isDark = computed(() => theme.global.name.value === 'dark');
 
-      let imgPath = lightLogo;
+      const imgPath = computed(() => theme.global.name.value === 'dark' ? darkLogo : lightLogo);
+
+      const shorDisplayName = computed(() => {
+        const words = displayName?.value.split(" ");
+
+        const firstLetters = words.map((word) => word[0]);
+
+        return firstLetters.join("");
+      });
 
       const logout = (() => {
         userStore.logout();
@@ -155,19 +192,20 @@
         router.push('/login');
       });
 
-      watch(isDark, (val) => {
-        theme.global.name.value = val ? 'sustainabilityDarkTheme' : 'sustainabilityTheme';
-        imgPath = val ? darkLogo : lightLogo;
-      });
+      const toggleTheme = () => {
+        theme.global.name.value = isDark.value ? 'light' : 'dark';
+      };
 
       return {
+        links,
+        route,
+        drawer,
         imgPath,
         isDark,
         isLoggedIn,
+        shorDisplayName,
         logout,
-        links,
-        route,
-        drawer
+        toggleTheme,
       };
     }
   })

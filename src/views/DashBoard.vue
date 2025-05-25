@@ -2,11 +2,13 @@
   <v-row>
     <v-col cols="12">
       <h1 class="text-text">La nostra casa&hellip; si sta spegnendo</h1>
-      <h3 class="text-primary">In questa dashboard puoi calcolare quanta CO₂ emette il veicolo con che usi peer spostarti</h3>
+      <h3 class="text-primary">Quanto impatto ha il mezzo di trasporto che usi per spostarti? Scoprilo</h3>
     </v-col>
   </v-row>
   <v-row>
-    <v-col cols="7">
+    <v-col cols="12"
+      sm="6"
+      lg="7">
       <v-row>
         <v-col cols="12">
           <CO2Calculator title="Emissioni di CO₂"
@@ -14,14 +16,16 @@
             icon="mdi-sprout-outline" />
         </v-col>
 
-        <v-col>
+        <v-col cols="12">
           <ClimateClock title="Siamo in ritardo"
             subtitle="Quanto tempo ci manca"
             icon="mdi-leaf-circle-outline" />
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="5">
+    <v-col cols="12"
+      sm="6"
+      lg="5">
       <GaiaFeed title="Gaia Feed"
         subtitle="Le ultime dal mondo"
         icon="mdi-leaf-circle-outline"

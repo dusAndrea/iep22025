@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import type { FeedType } from '@/types';
 import axios from 'axios';
+import { API_KEY, GREEN_URL } from '@/services/newsApiServices';
 
 export const useFeedsStore = defineStore('feeds', {
   state: () => ({
@@ -12,9 +13,6 @@ export const useFeedsStore = defineStore('feeds', {
   },
   actions: {
     async fetchFeeds() {
-      const API_KEY = '46094e7ced644eb0a3ac887f94fb61c5';
-      const GREEN_URL = 'https://newsapi.org/v2/everything';
-
       try {
         const response = await axios.get(GREEN_URL, {
           params: {

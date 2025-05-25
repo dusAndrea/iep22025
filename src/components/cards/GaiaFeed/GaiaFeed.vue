@@ -5,11 +5,9 @@
     <template #cardContent>
       <Transition>
         <div v-if="articles.length">
-
           <GaiaFeedArticle v-for="(article, key) in articles"
             :key="key"
             :article="article"></GaiaFeedArticle>
-
         </div>
         <div v-else>
           <GaiaFeedArticle />

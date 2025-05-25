@@ -2,9 +2,11 @@
   <DefaultCardWrapper :title="title"
     :subtitle="subtitle">
     <template #cardContent>
-      <v-container fluid>
-        <v-row>
-          <v-col>
+      <v-container fluid
+        class="pa-0">
+        <v-row no-gutters>
+          <v-col cols="12"
+            lg="6">
             <v-autocomplete v-model="startQuery"
               :items="startSuggestions"
               label="Punto di partenza"
@@ -14,7 +16,8 @@
               item-value="display_name"
               outlined />
           </v-col>
-          <v-col>
+          <v-col cols="12"
+            lg="6">
             <v-autocomplete v-model="endQuery"
               :items="endSuggestions"
               label="Punto di arrivo"

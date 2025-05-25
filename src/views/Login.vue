@@ -36,7 +36,7 @@
               required
               clearable
               autocomplete
-              :rules="[requiredRule]" />
+              :rules="[requiredRule, minLength]" />
           </v-col>
         </v-row>
         <v-row justify="center">
@@ -44,6 +44,7 @@
             <v-btn block
               color="primary"
               type="submit"
+              :loading="loading"
               :disabled="!formIsValid">
               Accedi
             </v-btn>
@@ -70,26 +71,28 @@
       const email = ref('');
       const password = ref('');
       const showPassword = ref(false);
-      const { emailRule, requiredRule } = useValidationRules();
+      const { emailRule, requiredRule, minLength } = useValidationRules();
       const formIsValid = ref(false);
-
       const router = useRouter();
       const userStore = useUserStore();
-      const messagesStore = useMessagesStore();
+      const feedbackStore = useMessagesStore();
+      const loading = ref(false);
 
       const handleLogin = async () => {
         try {
+          loading.value = true;
           const payload = {
             email: email.value,
             password: password.value
           } as UserType;
 
           await userStore.login(payload);
-          messagesStore.showMessage('Login effettuato con successo', 'success');
           router.push('/dashboard');
         }
         catch (error: any) {
-          messagesStore.showMessage(error.message);
+          feedbackStore.showMessage(error.message, 'error');
+        } finally {
+          loading.value = false;
         }
       };
 
@@ -98,8 +101,10 @@
         password,
         showPassword,
         formIsValid,
+        loading,
         emailRule,
         requiredRule,
+        minLength,
         handleLogin
       };
     }

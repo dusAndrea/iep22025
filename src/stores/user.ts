@@ -1,51 +1,125 @@
 import { defineStore } from 'pinia';
-import { db } from '@/services/';
-import { collection, query, where, getDocs, addDoc, } from 'firebase/firestore';
+import { auth, db } from '@/services/firebaseServices';
+import { collection, query, where, getDoc, deleteDoc, getDocs, addDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
+import { reauthenticateWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, deleteUser } from 'firebase/auth';
 import { type UserType } from '@/types';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
-    user: null as UserType | null,
+    uid: null as string | null,
+    displayName: null as string | null,
+    email: null as string | null,
   }),
   persist: true,
   getters: {
-    isLoggedIn: (state) => !!state.user,
+    isLoggedIn: state => !!state.uid,
+    getDisplayName: state => state.displayName,
+    getEmail: state => state.email
   },
   actions: {
-    async register(user: UserType): Promise<void> {
-      // controlla se l'utente esiste già
-      const usersRef = collection(db, 'users');
-      const q = query(usersRef, where('email', '==', user.email));
+    setUser(user: { uid: string; displayName?: string; email?: string; }) {
+      this.uid = user.uid;
+      this.displayName = user.displayName || '';
+      this.email = user.email || '';
+    },
 
-      const result = await getDocs(q);
+    async deleteAccount(): Promise<void> {
+      try {
+        const currentUser = auth.currentUser;
 
-      if (!result.empty) {
-        throw new Error('Utente già registrato.');
+        // Elimina dati Firestore
+        await deleteDoc(doc(db, 'users', currentUser?.uid));
+
+        // Elimina account Firebase
+        await deleteUser(currentUser);
+
+        this.resetUser();
+      } catch {
+        throw new Error('Operazione fallita');
       }
+    },
 
-      // se non esiste, aggiungi il nuovo utente
-      await addDoc(usersRef, user);
+    resetUser(): void {
+      this.uid = null;
+      this.displayName = null;
+      this.email = null;
+    },
+
+    async register(newUser: UserType): Promise<void> {
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, newUser.email, newUser.password);
+        const user = userCredential.user;
+        const displayName = `${newUser.firstName} ${newUser.lastName}`;
+
+        await updateProfile(user, { displayName: displayName });
+
+        await setDoc(doc(db, 'users', user.uid), {
+          displayName: displayName,
+          email: newUser.email,
+          createdAt: new Date()
+        });
+
+        this.setUser(user.uid, newUser.email, displayName);
+      } catch (error: any) {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        let customError;
+
+        switch (errorCode) {
+          case 'auth/email-already-in-use':
+            customError = 'Email già registrata';
+            break;
+          case 'auth/invalid-email':
+            customError = 'Email non valida';
+            break;
+          case 'auth/weak-password':
+            customError = 'Password troppo debole';
+            break;
+          default:
+            customError = `Errore generico ${errorMessage}`;
+        }
+
+        throw new Error(customError);
+      }
     },
 
     logout(): void {
-      this.user = null;
+      this.resetUser();
     },
 
-    async login(user: UserType): Promise<void> {
+    async login(userLogin: UserType): Promise<void> {
+      const userCredential = await signInWithEmailAndPassword(auth, userLogin.email, userLogin.password);
 
-      const q = query(collection(db, 'users'),
-        where('email', '==', user.email),
-        where('password', '==', user.password));
+      const user = userCredential.user;
 
-      const querySnapshot = await getDocs(q);
+      const docRef = doc(db, 'users', user.uid);
+      const docSnap = await getDoc(docRef);
 
-      if (querySnapshot.empty) {
-        throw new Error('Credenziali non valide.');
+      if (docSnap.exists()) {
+        this.setUser({ uid: user.uid, ...docSnap.data() });
+      } else {
+        throw new Error('Utente non esistente');
       }
+    },
 
-      const userDoc = querySnapshot.docs[0];
+    async update(userPayload: any): Promise<void> {
+      // TODO: terminare il processo di aggiornamento
+      try {
+        const currentUser = auth.currentUser;
 
-      this.user = userDoc.data() as UserType;
+        await updateProfile(currentUser, {
+          displayName: userPayload.displayName,
+          email: userPayload.email,
+        });
+
+        const userDocRef = doc(db, 'users', currentUser.uid);
+
+        await updateDoc(userDocRef, userPayload);
+
+        this.setUser({ uid: currentUser?.uid, displayName: userPayload.displayName, email: userPayload?.email });
+      } catch (error: any) {
+        throw new Error('Errore durante l\'aggiornamento:');
+      }
     }
   },
 });
