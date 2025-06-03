@@ -1,4 +1,5 @@
-# PROGETTO GAIA-DATA
+
+# PROGETTO: GAIA-DATA
 
 ## Funzionalità principali
 
