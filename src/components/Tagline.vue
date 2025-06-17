@@ -15,7 +15,6 @@
   import taglineImage from '@/assets/tagline_opacity.png';
 
   export default defineComponent({
-    name: 'TaglineCard',
     components: {},
     setup() {
 

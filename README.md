@@ -69,7 +69,8 @@ Modalità dark/light e accessibilità
 
 ## Viste
 
-- Login (user, password, recupera password, mail utente)
+- Login OK
+- Register
 - Recupera password(emeil, conferma email)
 - New User (nome, cognome, email, conferma mail, password, conferma Password)
 - Pagina Profilo (riepilogo dati, preferente, salvataggio)

@@ -1,9 +1,10 @@
 <template>
   <v-app :full-height="true">
     <GlobalSnackbar />
-    <Navbar />
+    <NavBar />
 
     <v-main :scrollable="true">
+      <GaiaFeedCarousel />
       <v-container fluid>
         <v-row>
           <v-col cols="12"
@@ -17,21 +18,23 @@
         </v-row>
       </v-container>
     </v-main>
-    <Footer />
+    <FooterBar />
   </v-app>
 </template>
 <script lang="ts">
   import { RouterView } from 'vue-router';
-  import { Navbar, GlobalSnackbar, Footer } from '@/components/';
+  import { NavBar, GlobalSnackbar, FooterBar } from '@/components/';
   import { defineComponent } from 'vue';
+  import { GaiaFeedCarousel } from '@/components';
 
   export default defineComponent({
     name: 'App',
     components: {
-      Navbar,
+      NavBar,
       RouterView,
       GlobalSnackbar,
-      Footer
+      FooterBar,
+      GaiaFeedCarousel
     },
   });
 </script>

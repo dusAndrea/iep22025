@@ -2,12 +2,12 @@
   <v-row>
     <v-col cols="12">
       <h1 class="text-text">La nostra casa&hellip; si sta spegnendo</h1>
-      <h3 class="text-primary">Quanto impatto ha il mezzo di trasporto che usi per spostarti? Scoprilo</h3>
+      <h3 class="text-primary">Sai davvero quanta CO₂ emetti quando ti sposti?</h3>
     </v-col>
   </v-row>
   <v-row>
     <v-col cols="12"
-      sm="6"
+      md="6"
       lg="7">
       <v-row>
         <v-col cols="12">
@@ -22,15 +22,6 @@
             icon="mdi-leaf-circle-outline" />
         </v-col>
       </v-row>
-    </v-col>
-    <v-col cols="12"
-      sm="6"
-      lg="5">
-      <GaiaFeed title="Gaia Feed"
-        subtitle="Le ultime dal mondo"
-        icon="mdi-leaf-circle-outline"
-        color="background"
-        :flat="true" />
     </v-col>
   </v-row>
   <v-row>
@@ -48,13 +39,12 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { CO2Calculator, GaiaFeed, ClimateClock } from '@/components';
+  import { CO2Calculator, ClimateClock } from '@/components';
 
   export default defineComponent({
     name: 'DashBoard',
     components: {
       CO2Calculator,
-      GaiaFeed,
       ClimateClock
     },
   });

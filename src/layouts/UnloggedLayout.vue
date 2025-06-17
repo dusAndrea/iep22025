@@ -6,10 +6,13 @@
         class="login fill-height">
         <v-row class="fill-height"
           no-gutters>
-          <v-col cols="6">
+          <v-col md="6"
+            class="d-none d-md-block">
             <TagLineCard />
           </v-col>
-          <v-col cols="4"
+          <v-col cols="12"
+            sm="8"
+            md="4"
             align-self="center"
             class="text-text mx-auto">
             <RouterView />
@@ -17,18 +20,21 @@
         </v-row>
       </v-container>
     </v-main>
+    <FooterBar class="d-flex d-md-none" />
   </v-app>
 </template>
 <script lang="ts">
   import { RouterView } from 'vue-router';
   import { defineComponent } from 'vue';
   import { TagLineCard, GlobalSnackbar } from '@/components';
+  import FooterBar from '@/components/Footer.vue';
   export default defineComponent({
     name: 'App',
     components: {
       RouterView,
       TagLineCard,
-      GlobalSnackbar
+      GlobalSnackbar,
+      FooterBar
     },
   });
 </script>

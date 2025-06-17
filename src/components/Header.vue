@@ -48,16 +48,47 @@
         class="mx-4 my-auto d-none d-lg-flex"
         vertical></v-divider>
 
-      <v-avatar color="red"
-        class="ml-4 ml-lg-0">
-        <span class="text-body">{{ shorDisplayName }}</span>
-      </v-avatar>
-
       <v-icon-btn class="d-none d-lg-flex"
         icon="mdi-logout"
         size="large"
         variant="text"
         @click="logout" />
+
+      <v-menu min-width="200px">
+        <template v-slot:activator="{ props }">
+          <v-btn icon
+            v-bind="props">
+            <v-avatar color="red"
+              size="large">
+              <span class="text-h5">{{ getShortDisplayName }}</span>
+            </v-avatar>
+          </v-btn>
+        </template>
+        <v-card>
+          <v-card-text>
+            <div class="mx-auto text-center">
+              <v-avatar color="brown">
+                <span class="text-h5">{{ getShortDisplayName }}</span>
+              </v-avatar>
+              <h3>{{ getDisplayName }}</h3>
+              <p class="text-caption mt-1">
+                {{ getEmail }}
+              </p>
+              <v-divider class="my-3"></v-divider>
+              <v-btn variant="text"
+                rounded>
+                <RouterLink to="/profile">Edit Account</RouterLink>
+              </v-btn>
+              <v-divider class="my-3"></v-divider>
+              <v-btn variant="text"
+                rounded>
+                <RouterLink to="/#"
+                  @click="logout">Logout</RouterLink>
+              </v-btn>
+            </div>
+          </v-card-text>
+        </v-card>
+      </v-menu>
     </v-app-bar>
 
     <!-- Drawer for mobile -->
@@ -73,9 +104,7 @@
           :class="{ 'active-link': route.path === link.to }">
 
           <v-list-item-title>
-            <v-list-item-icon>
-              <v-icon :style="{ color: link.color }">{{ link.icon }}</v-icon>
-            </v-list-item-icon>
+            <v-icon :style="{ color: link.color }">{{ link.icon }}</v-icon>
             {{ link.text }}
           </v-list-item-title>
         </v-list-item>
@@ -84,12 +113,12 @@
 
         <v-list-item>
           <v-list-item-title>
-            <v-list-item-icon>
-              <v-icon-btn icon="mdi-logout"
-                variant="text"
-                @click="logout" />
-              Logout
-            </v-list-item-icon>
+
+            <v-icon-btn icon="mdi-logout"
+              variant="text"
+              @click="logout" />
+            Logout
+
           </v-list-item-title>
         </v-list-item>
       </v-list>
@@ -123,7 +152,7 @@
       const route = useRoute();
       const feedsStore = useFeedsStore();
       const drawer = ref(false);
-      const { displayName } = storeToRefs(userStore);
+      const { getDisplayName, getEmail, getShortDisplayName } = storeToRefs(userStore);
       // TODO: controllare modalità responsive
 
       const links = computed(() => [
@@ -178,8 +207,8 @@
 
       const imgPath = computed(() => theme.global.name.value === 'dark' ? darkLogo : lightLogo);
 
-      const shorDisplayName = computed(() => {
-        const words = displayName?.value.split(" ");
+      const shortUserName = computed(() => {
+        const words = getDisplayName?.value.split(" ");
 
         const firstLetters = words.map((word) => word[0]);
 
@@ -203,7 +232,10 @@
         imgPath,
         isDark,
         isLoggedIn,
-        shorDisplayName,
+        shortUserName,
+        getDisplayName,
+        getEmail,
+        getShortDisplayName,
         logout,
         toggleTheme,
       };

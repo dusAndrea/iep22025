@@ -14,53 +14,52 @@ const router = createRouter({
         {
           path: '',
           name: 'Home',
+          redirect: '/dashboard',
+        },
+        {
+          path: 'dashboard',
+          name: 'Dashboard',
           component: DashBoard,
         },
         {
-          path: "/dashboard",
-          name: "Dashboard",
-          component: DashBoard,
-        },
-        {
-          path: "/quiz",
-          name: "Quiz",
+          path: 'quiz',
+          name: 'Quiz',
           component: Quiz,
         },
         {
-          path: "/profile",
-          name: "Profile",
+          path: 'profile',
+          name: 'Profile',
           component: Profile,
         },
         {
-          path: '/about',
+          path: 'about',
           name: 'About',
           component: About,
-
         },
-      ]
+      ],
     },
     {
-      path: '/',
+      path: '/auth',
       component: UnloggedLayout,
       meta: { requiresAuth: false },
       children: [
         {
-          path: '/login',
+          path: 'login',
           name: 'login',
           component: Login,
         },
         {
-          path: '/register',
-          name: 'Register',
+          path: 'register',
+          name: 'register',
           component: Register,
         },
-      ]
+      ],
     },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
-      component: NotFound
-    }
+      component: NotFound,
+    },
   ],
 });
 
@@ -69,7 +68,7 @@ router.beforeEach((to, from, next) => {
   const isLoggedIn = userStore.isLoggedIn;
 
   if (to.meta.requiresAuth && !isLoggedIn) {
-    next('/login');
+    next('/auth/login');
   } else if ((to.name === 'login' || to.name === 'register') && isLoggedIn) {
     next('/dashboard');
   } else {

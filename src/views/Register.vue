@@ -3,20 +3,36 @@
     :border="false"
     :flat="true">
     <v-card-title>
-      <h1 class="text-h4 text-secondary">Crea un account</h1>
+      <v-row align-content="center"
+        justify="center">
+        <v-col align-self="center"
+          cols="6">
+          <v-img :width="300"
+            aspect-ratio="16/9"
+            cover
+            :src="imgPath"
+            class="mx-auto" />
+        </v-col>
+      </v-row>
+      <v-row class="my-3">
+        <v-col>
+          <h1 class="text-h4 text-secondary">Crea un account</h1>
+        </v-col>
+      </v-row>
     </v-card-title>
 
     <v-spacer />
 
     <v-card-subtitle>Ha già un account?
-      <RouterLink to="/login">Accedi</RouterLink>
+      <RouterLink to="login">Accedi</RouterLink>
     </v-card-subtitle>
 
     <v-card-text>
       <v-form @submit.prevent="handleRegister"
         v-model="formIsValid">
         <v-row>
-          <v-col>
+          <v-col cols="12"
+            mg="6">
             <v-text-field v-model="firstName"
               label="Nome"
               type="text"
@@ -25,7 +41,8 @@
               clearable
               :rules="[requiredRule]" />
           </v-col>
-          <v-col>
+          <v-col cols="12"
+            mg="6">
             <v-text-field v-model="lastName"
               label="Cognome"
               type="text"
@@ -34,10 +51,9 @@
               clearable
               :rules="[requiredRule]" />
           </v-col>
-        </v-row>
 
-        <v-row>
-          <v-col>
+          <v-col cols="12"
+            mg="6">
             <v-text-field v-model="email"
               label="Email"
               type="email"
@@ -46,7 +62,8 @@
               clearable
               :rules="[requiredRule, emailRule]" />
           </v-col>
-          <v-col>
+          <v-col cols="12"
+            mg="6">
             <v-text-field v-model="confirmEmail"
               label="Ripeti Email"
               type="email"
@@ -55,10 +72,9 @@
               clearable
               :rules="[requiredRule, emailRule, matchRule(email)]" />
           </v-col>
-        </v-row>
 
-        <v-row>
-          <v-col>
+          <v-col cols="12"
+            mg="6">
             <v-text-field name="password"
               id="password"
               v-model="password"
@@ -72,7 +88,8 @@
               autocomplete
               :rules="[requiredRule, minLength]" />
           </v-col>
-          <v-col>
+          <v-col cols="12"
+            mg="6">
             <v-text-field name="confirmPassword"
               id="confirmPassword"
               v-model="confirmPassword"
@@ -87,8 +104,10 @@
               :rules="[requiredRule, minLength, matchRule(password)]" />
           </v-col>
         </v-row>
-        <v-row justify="center">
-          <v-col cols="4">
+        <v-row justify="center"
+          class="mb-4">
+          <v-col cols="10"
+            md="4">
             <v-btn block
               color="primary"
               type="submit"
@@ -104,18 +123,21 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
+  import { defineComponent, ref, computed } from 'vue';
+  import { useTheme } from 'vuetify';
+  import lightLogo from '@/assets/logo_nobg_light.png';
+  import darkLogo from '@/assets/logo_nobg_dark.png';
   import { useUserStore } from '@/stores/user';
   import { useRouter } from 'vue-router';
   import taglineImage from '@/assets/tagline_opacity.png';
   import { useMessagesStore } from '@/stores/messages';
-  import { storeToRefs } from 'pinia';
   import { useValidationRules } from '@/composables';
   import type { UserType } from '@/types';
 
   export default defineComponent({
     name: 'UserRegister',
     setup: () => {
+      const theme = useTheme();
       const showPassword = ref(false);
       const showConfirmPassword = ref(false);
       const firstName = ref('');
@@ -127,11 +149,11 @@
       const error = ref<string | null>(null);
       const userStore = useUserStore();
       const messagesStore = useMessagesStore();
-      const { getTimeout } = storeToRefs(messagesStore);
       const router = useRouter();
       const { emailRule, requiredRule, minLength, matchRule } = useValidationRules();
       const formIsValid = ref(false);
       const loading = ref(false);
+      const imgPath = computed(() => theme.global.name.value === 'dark' ? darkLogo : lightLogo);
 
       const handleRegister = async () => {
         try {
@@ -147,11 +169,7 @@
 
           messagesStore.showMessage('Utente creato con successo', 'success');
 
-          setTimeout(() => {
-            // redirect to home page after successful registration
-            router.push('/login');
-          }, getTimeout.value);
-
+          router.push('/login');
         } catch (e: any) {
           messagesStore.showMessage(e.message, 'error');
         } finally {
@@ -167,6 +185,7 @@
         email,
         confirmEmail,
         loading,
+        imgPath,
         emailRule,
         requiredRule,
         minLength,

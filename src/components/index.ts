@@ -1,20 +1,19 @@
 import { ClimateClock } from "./cards/ClimateClock";
 import { CO2Calculator } from "./cards/CO2";
-import { GaiaFeed } from "./cards/GaiaFeed";
 import { Quiz } from './cards/Quiz';
-import Footer from './Footer.vue';
+import FooterBar from './Footer.vue';
 import GlobalSnackbar from "./GlobalSnackbar.vue";
-import Navbar from "./Navbar.vue";
-import TagLineCard from './TagLineCard.vue';
+import NavBar from "./Header.vue";
+import TagLineCard from './Tagline.vue';
 
 export * from './DarkLightToggleTheme';
+export * from './GaiaFeedCarousel';
 export {
   ClimateClock,
   CO2Calculator,
-  GaiaFeed,
   Quiz,
-  Footer,
+  FooterBar,
   GlobalSnackbar,
-  Navbar,
+  NavBar,
   TagLineCard
 };

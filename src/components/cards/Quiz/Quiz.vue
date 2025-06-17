@@ -31,79 +31,14 @@
   </v-card>
 </template>
 <script lang="ts">
-  import { ref, computed, defineComponent } from 'vue';
+  import { ref, computed, defineComponent, onMounted } from 'vue';
   //import { doc, updateDoc, arrayUnion } from 'firebase/firestore';
+
 
   export default defineComponent({
     setup() {
-      const questions = [
-        {
-          question: 'Qual è la principale causa del cambiamento climatico?',
-          options: ['Deforestazione', 'Agricoltura biologica', 'Energia solare'],
-          answer: 'Deforestazione',
-        },
-        {
-          question: `Quale gas è il principale responsabile dell'effetto serra?`,
-          options: ['Ossigeno', 'Anidride carbonica', 'Azoto'],
-          answer: 'Anidride carbonica',
-        },
-        {
-          question: 'Quale delle seguenti è una fonte di energia rinnovabile?',
-          options: ['Carbone', 'Petrolio', 'Energia eolica'],
-          answer: 'Energia eolica',
-        },
-        {
-          question: 'Che cosa significa riciclo?',
-          options: [
-            'Usare un prodotto una sola volta',
-            'Buttare via i rifiuti',
-            'Trasformare i rifiuti in nuovi prodotti'
-          ],
-          answer: 'Trasformare i rifiuti in nuovi prodotti',
-        },
-        {
-          question: 'Qual è il simbolo della raccolta differenziata?',
-          options: ['Un albero', 'Tre frecce che formano un triangolo', 'Una bottiglia'],
-          answer: 'Tre frecce che formano un triangolo',
-        },
-        {
-          question: `Come possiamo ridurre l'uso della plastica?`,
-          options: [
-            'Usare bottiglie riutilizzabili',
-            'Comprare più plastica',
-            'Gettare la plastica nel mare'
-          ],
-          answer: 'Usare bottiglie riutilizzabili',
-        },
-        {
-          question: `Qual è un effetto dell'inquinamento atmosferico?`,
-          options: ['Aria pulita', 'Piogge acide', 'Più foreste'],
-          answer: 'Piogge acide',
-        },
-        {
-          question: 'Perché è importante piantare alberi?',
-          options: [
-            `Per aumentare l'inquinamento`,
-            `Per produrre ossigeno`,
-            'Per ridurre la biodiversità'
-          ],
-          answer: 'Per produrre ossigeno',
-        },
-        {
-          question: 'Qual è un buon modo per risparmiare energia in casa?',
-          options: ['Lasciare le luci accese', 'Usare lampadine LED', 'Aprire il frigo spesso'],
-          answer: 'Usare lampadine LED',
-        },
-        {
-          question: 'Cosa significa sostenibilità?',
-          options: [
-            'Utilizzare risorse in modo che durino nel tempo',
-            'Consumare tutto subito',
-            'Ignorare i cambiamenti climatici'
-          ],
-          answer: 'Utilizzare risorse in modo che durino nel tempo',
-        },
-      ];
+      
+
 
       const currentIndex = ref(0);
       const userAnswer = ref('');
@@ -125,6 +60,8 @@
         }
       }
 
+
+
       async function saveResult() {
         // if (!currentUser.value) return;
         // const userRef = doc(db, 'users', currentUser.value.uid);
@@ -143,6 +80,8 @@
         quizCompleted.value = false;
       }
 
+
+
       return {
         questions,
         quizCompleted,
@@ -152,7 +91,7 @@
         score,
         submitAnswer,
         resetQuiz,
-        saveResult
+        saveResult,
       };
     }
   })

@@ -3,12 +3,27 @@
     :border="false"
     :flat="true">
     <v-card-title>
-      <h1 class="text-h4 text-secondary">Benvenuto</h1>
+      <v-row align-content="center"
+        justify="center">
+        <v-col align-self="center"
+          cols="6">
+          <v-img :width="300"
+            aspect-ratio="16/9"
+            cover
+            :src="imgPath"
+            class="mx-auto" />
+        </v-col>
+      </v-row>
+      <v-row class="my-3">
+        <v-col>
+          <h1 class="text-h4 text-secondary">Benvenuto</h1>
+        </v-col>
+      </v-row>
     </v-card-title>
 
     <v-spacer />
 
-    <v-card-subtitle>Non hai un account? <RouterLink to="/register">Registrati</RouterLink></v-card-subtitle>
+    <v-card-subtitle>Non hai un account? <RouterLink to="register">Registrati</RouterLink></v-card-subtitle>
 
     <v-card-text>
       <v-form @submit.prevent="handleLogin"
@@ -39,8 +54,10 @@
               :rules="[requiredRule, minLength]" />
           </v-col>
         </v-row>
-        <v-row justify="center">
-          <v-col cols="4">
+        <v-row justify="center"
+          class="mb-4">
+          <v-col cols="10"
+            md="4">
             <v-btn block
               color="primary"
               type="submit"
@@ -56,8 +73,10 @@
 </template>
 
 <script lang="ts">
-  import { defineComponent, ref } from 'vue';
-
+  import { defineComponent, ref, computed } from 'vue';
+  import { useTheme } from 'vuetify';
+  import lightLogo from '@/assets/logo_nobg_light.png';
+  import darkLogo from '@/assets/logo_nobg_dark.png';
   import { useRouter } from 'vue-router';
   import { useUserStore } from '@/stores/user';
   import { useMessagesStore } from '@/stores/messages';
@@ -68,6 +87,7 @@
     name: 'UserLogin',
 
     setup: () => {
+      const theme = useTheme();
       const email = ref('');
       const password = ref('');
       const showPassword = ref(false);
@@ -77,7 +97,7 @@
       const userStore = useUserStore();
       const feedbackStore = useMessagesStore();
       const loading = ref(false);
-
+      const imgPath = computed(() => theme.global.name.value === 'dark' ? darkLogo : lightLogo);
       const handleLogin = async () => {
         try {
           loading.value = true;
@@ -102,6 +122,7 @@
         showPassword,
         formIsValid,
         loading,
+        imgPath,
         emailRule,
         requiredRule,
         minLength,

@@ -14,7 +14,12 @@ export const useUserStore = defineStore('user', {
   getters: {
     isLoggedIn: state => !!state.uid,
     getDisplayName: state => state.displayName,
-    getEmail: state => state.email
+    getEmail: state => state.email,
+    getShortDisplayName: state => {
+      const words = state.displayName?.split(" ");
+      const firstLetters = words?.map((word) => word[0]);
+      return firstLetters?.join("");
+    },
   },
   actions: {
     setUser(user: { uid: string; displayName?: string; email?: string; }) {
@@ -88,17 +93,41 @@ export const useUserStore = defineStore('user', {
     },
 
     async login(userLogin: UserType): Promise<void> {
-      const userCredential = await signInWithEmailAndPassword(auth, userLogin.email, userLogin.password);
+      let message = 'Errore di autenticazione';
 
-      const user = userCredential.user;
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, userLogin.email, userLogin.password);
+        const user = userCredential.user;
 
-      const docRef = doc(db, 'users', user.uid);
-      const docSnap = await getDoc(docRef);
+        const docRef = doc(db, 'users', user.uid);
+        const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        this.setUser({ uid: user.uid, ...docSnap.data() });
-      } else {
-        throw new Error('Utente non esistente');
+        if (docSnap.exists()) {
+          this.setUser({ uid: user.uid, ...docSnap.data() });
+        } else {
+          throw new Error(message);
+        }
+      } catch (error: any) {
+        switch (error.code) {
+          case 'auth/user-not-found':
+            message = 'Utente non trovato';
+            break;
+          case 'auth/wrong-password':
+            message = 'Password errata';
+            break;
+          case 'auth/invalid-email':
+            message = 'Email non valida';
+            break;
+          case 'auth/too-many-requests':
+            message = 'Troppi tentativi. Riprova più tardi.';
+            break;
+          case 'auth/network-request-failed':
+            message = 'Errore di rete. Verifica la connessione.';
+            break;
+          default:
+            console.error('Errore autenticazione non gestito:', error.code, error.message);
+            break;
+        }
       }
     },
 
