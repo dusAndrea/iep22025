@@ -32,7 +32,7 @@
         v-model="formIsValid">
         <v-row>
           <v-col cols="12"
-            mg="6">
+            md="6">
             <v-text-field v-model="firstName"
               label="Nome"
               type="text"
@@ -42,7 +42,7 @@
               :rules="[requiredRule]" />
           </v-col>
           <v-col cols="12"
-            mg="6">
+            md="6">
             <v-text-field v-model="lastName"
               label="Cognome"
               type="text"
@@ -53,7 +53,7 @@
           </v-col>
 
           <v-col cols="12"
-            mg="6">
+            md="6">
             <v-text-field v-model="email"
               label="Email"
               type="email"
@@ -63,7 +63,7 @@
               :rules="[requiredRule, emailRule]" />
           </v-col>
           <v-col cols="12"
-            mg="6">
+            md="6">
             <v-text-field v-model="confirmEmail"
               label="Ripeti Email"
               type="email"
@@ -74,7 +74,7 @@
           </v-col>
 
           <v-col cols="12"
-            mg="6">
+            md="6">
             <v-text-field name="password"
               id="password"
               v-model="password"
@@ -89,7 +89,7 @@
               :rules="[requiredRule, minLength]" />
           </v-col>
           <v-col cols="12"
-            mg="6">
+            md="6">
             <v-text-field name="confirmPassword"
               id="confirmPassword"
               v-model="confirmPassword"
@@ -157,6 +157,7 @@
 
       const handleRegister = async () => {
         try {
+          // TODO: intercettare errore 400 da firebase
           loading.value = true;
           const payload = {
             firstName: firstName.value,
@@ -169,7 +170,7 @@
 
           messagesStore.showMessage('Utente creato con successo', 'success');
 
-          router.push('/login');
+          router.push({name: 'login'});
         } catch (e: any) {
           messagesStore.showMessage(e.message, 'error');
         } finally {

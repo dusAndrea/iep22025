@@ -218,7 +218,7 @@
       const logout = (() => {
         userStore.logout();
         feedsStore.clearFeeds();
-        router.push('/login');
+        router.push({name: 'login'});
       });
 
       const toggleTheme = () => {
