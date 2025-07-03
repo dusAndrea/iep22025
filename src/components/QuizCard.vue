@@ -1,12 +1,13 @@
 <template>
-  <v-progress-circular v-if="loading"
-    indeterminate
-    color="primary"
-    class="ma-auto" />
+  <DefaultCardWrapper v-if="loading">
+    <v-progress-circular indeterminate
+      color="primary"
+      class="ma-auto" />
+  </DefaultCardWrapper>
   <DefaultCardWrapper v-else-if="!quizCompleted && questions.length"
-    :title="title">
+    :title="title"
+    icon="mdi-head-question-outline">
     <template #cardContent>
-
       <v-radio-group v-model="userAnswer">
         <v-radio v-for="(option, index) in currentQuestion.options"
           :key="index"
@@ -15,9 +16,17 @@
       </v-radio-group>
 
       <v-card-actions>
-        <v-btn :disabled="isNaN(userAnswer)"
+        <v-btn block
           color="primary"
-          @click="submitAnswer">Avanti</v-btn>
+          type="submit"
+          :loading="loading"
+          :disabled="isNaN(userAnswer)"
+          @click="submitAnswer">
+          Avanti
+        </v-btn>
+        <!-- <v-btn :disabled="isNaN(userAnswer)"
+          color="primary"
+          @click="submitAnswer">Avanti</v-btn> -->
       </v-card-actions>
     </template>
   </DefaultCardWrapper>

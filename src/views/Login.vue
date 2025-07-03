@@ -58,7 +58,7 @@
           <v-col cols="10"
             md="4">
             <v-btn block
-              color="primary"
+              color="secondary"
               type="submit"
               :loading="loading"
               :disabled="!formIsValid">
@@ -77,8 +77,7 @@
   import lightLogo from '@/assets/logo_nobg_light.png';
   import darkLogo from '@/assets/logo_nobg_dark.png';
   import { useRouter } from 'vue-router';
-  import { useUserStore } from '@/stores/user';
-  import { useMessagesStore } from '@/stores/messages';
+  import { useUserStore, useMessagesStore } from '@/stores';
   import { useValidationRules, useFirebaseAuthError } from '@/composables';
   import type { UserType } from '@/types';
 

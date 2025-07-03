@@ -4,12 +4,12 @@
     <template #cardContent>
       <v-container fluid
         class="pa-0">
-        <v-row no-gutters>
+        <v-row>
           <v-col cols="12"
             lg="6">
             <v-autocomplete v-model="startQuery"
               :items="startSuggestions"
-              label="Punto di partenza"
+              label="Digita l'indirizzo di partenza"
               :loading="loadingStart"
               @update:search="handleStartSearch"
               item-title="display_name"
@@ -20,7 +20,7 @@
             lg="6">
             <v-autocomplete v-model="endQuery"
               :items="endSuggestions"
-              label="Punto di arrivo"
+              label="Digita l'indirizzo di arrivo"
               :loading="loadingEnd"
               @update:search="handleEndSearch"
               item-title="display_name"
@@ -112,8 +112,8 @@
       }
     },
     setup() {
-      const startQuery = ref('');
-      const endQuery = ref('');
+      const startQuery = ref();
+      const endQuery = ref();
       const startSuggestions = ref([]);
       const endSuggestions = ref([]);
       const loadingStart = ref(false);

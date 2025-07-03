@@ -1,4 +1,3 @@
-import ClimateClockCard from "./ClimateClockCard.vue";
 import CO2Calculator from './CO2Calculator.vue';
 import CO2CarsDialog from "./CO2CarsDialog.vue";
 import DefaultCardWrapper from './DefaultCardWrapper.vue';
@@ -14,7 +13,6 @@ import QuizCard from './QuizCard.vue';
 import TagLineCard from './Tagline.vue';
 
 export {
-  ClimateClockCard,
   CO2Calculator,
   CO2CarsDialog,
   DefaultCardWrapper,

@@ -23,7 +23,7 @@
 </template>
 <script lang="ts">
   import { RouterView } from 'vue-router';
-  import { Header, GlobalSnackbar, Footer } from '@/components/';
+  import { Header, GlobalSnackbar, Footer } from '@/components';
   import { defineComponent } from 'vue';
 
   export default defineComponent({

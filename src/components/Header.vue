@@ -137,7 +137,8 @@
   import { storeToRefs } from 'pinia';
   import { useRouter } from 'vue-router';
   import { useRoute } from 'vue-router';
-  import { DesktopTheme, MobileTheme } from './';
+  import DesktopTheme from '@/components/DesktopTheme.vue';
+  import MobileTheme from '@/components/MobileTheme.vue';
 
   export default defineComponent({
     components: {

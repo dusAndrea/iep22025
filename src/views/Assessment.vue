@@ -7,8 +7,8 @@
   </v-row>
   <v-row>
     <v-col cols="12"
-      sm="6"
-      lg="7">
+      sm="8"
+      lg="8">
       <v-row>
         <v-col cols="12">
           <Transition>
@@ -25,8 +25,7 @@
                 <v-row align="center"
                   justify="center">
                   <v-col>
-                    <v-btn primary
-                      @click="showQuiz = !showQuiz">Inizia il quiz</v-btn>
+                    <v-btn @click="showQuiz = !showQuiz">Inizia il quiz</v-btn>
                   </v-col>
                 </v-row>
               </v-container>
@@ -36,8 +35,8 @@
       </v-row>
     </v-col>
     <v-col cols="12"
-      sm="6"
-      lg="5">Il tuo storico
+      sm="4"
+      lg="4">Il tuo storico
     </v-col>
   </v-row>
 </template>
