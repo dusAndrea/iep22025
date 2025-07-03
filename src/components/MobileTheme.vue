@@ -25,7 +25,6 @@
         <span>Dark Mode</span>
       </div>
     </div>
-
   </v-snackbar>
 </template>
 <script lang="ts">

@@ -6,9 +6,8 @@
       <v-row align-content="center"
         justify="center">
         <v-col align-self="center"
-          cols="6">
-          <v-img :width="300"
-            aspect-ratio="16/9"
+          cols="4">
+          <v-img aspect-ratio="16/9"
             cover
             :src="imgPath"
             class="mx-auto" />
@@ -16,7 +15,7 @@
       </v-row>
       <v-row class="my-3">
         <v-col>
-          <h1 class="text-h4 text-secondary">Benvenuto</h1>
+          <h1 class="text-h3 text-text">Benvenuto</h1>
         </v-col>
       </v-row>
     </v-card-title>
@@ -80,12 +79,12 @@
   import { useRouter } from 'vue-router';
   import { useUserStore } from '@/stores/user';
   import { useMessagesStore } from '@/stores/messages';
-  import { useValidationRules } from '@/composables';
+  import { useValidationRules, useFirebaseAuthError } from '@/composables';
   import type { UserType } from '@/types';
 
   export default defineComponent({
     name: 'UserLogin',
-    setup: () => {
+    setup() {
       const theme = useTheme();
       const email = ref('');
       const password = ref('');
@@ -97,6 +96,8 @@
       const feedbackStore = useMessagesStore();
       const loading = ref(false);
       const imgPath = computed(() => theme.global.name.value === 'dark' ? darkLogo : lightLogo);
+      const { getFirebaseAuthErrorMessage } = useFirebaseAuthError();
+
       const handleLogin = async () => {
         try {
           loading.value = true;
@@ -109,7 +110,9 @@
           router.push('/dashboard');
         }
         catch (error: any) {
-          feedbackStore.showMessage(error.message, 'error');
+          const code = error.code || '';
+          const message = getFirebaseAuthErrorMessage(code);
+          feedbackStore.showMessage(message, 'error');
         } finally {
           loading.value = false;
         }

@@ -1,0 +1,117 @@
+<template>
+  <v-container fluid>
+    <v-row dense>
+      <v-col v-for="(feed, index) in feeds"
+        :key="index"
+        cols="12"
+        md="6"
+        lg="4">
+        <v-card>
+          <v-img class="align-end text-white opacity-4"
+            :src="feed.urlToImage"
+            cover
+            aspect-ratio="16/9">
+            <template v-slot:placeholder>
+              <div class="d-flex align-center justify-center fill-height">
+                <v-progress-circular color="grey-lighten-4"
+                  indeterminate></v-progress-circular>
+              </div>
+            </template>
+            <v-card-title>
+              <a :href="feed.url"
+                target="_blank"
+                class="text-white text-decoration-none gaia-opacity">{{ feed.title }}</a></v-card-title>
+          </v-img>
+
+          <v-card-subtitle class="pt-4">
+            {{ feed.description }}
+          </v-card-subtitle>
+
+          <v-card-text>
+            {{ feed.content }}
+          </v-card-text>
+
+          <v-card-text class="d-flex justify-space-between">
+
+            <div class="d-flex flex-column text-truncate">
+              <strong>{{ feed.author }}</strong>
+              <span class="text-medium-emphasis">{{ getFormattedDate(feed.publishedAt) }}</span>
+            </div>
+            <v-btn :border="true"
+              primary
+              :href="feed.url">Leggi</v-btn>
+          </v-card-text>
+        </v-card>
+
+      </v-col>
+    </v-row>
+  </v-container>
+</template>
+<script lang="ts">
+  import { defineComponent, onMounted, ref } from 'vue';
+  import { useFeedsStore } from '@/stores';
+  import { storeToRefs } from 'pinia';
+  import type { FeedType } from '@/types';
+  import { useMessagesStore } from '@/stores';
+
+  export default defineComponent({
+    name: 'GreenFeed',
+    components: {
+    },
+    setup() {
+      const feedStore = useFeedsStore();
+      const feeds = ref([] as FeedType[]);
+      const { getFeeds } = storeToRefs(feedStore);
+      const messagesStore = useMessagesStore();
+      const carouselConfig = {
+        itemsToShow: 4,
+        wrapAround: false,
+        snapAlign: 'start',
+        gap: 20,
+        height: 160
+      };
+
+      const fetchFeeds = async () => {
+        if (!getFeeds.value.length) {
+          try {
+            await feedStore.fetchFeeds();
+          } catch (error: any) {
+            messagesStore.showMessage(error.message, 'error');
+          }
+        }
+        feeds.value = getFeeds.value;
+      };
+
+      const getFormattedDate = (articleDate: Date) => {
+        if (articleDate) {
+          return new Date(articleDate).toLocaleDateString('en-GB', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric',
+            timeZone: 'UTC',
+          });
+        }
+        return '';
+      };
+
+      onMounted(() => {
+        fetchFeeds();
+      });
+
+      return {
+        feeds,
+        carouselConfig,
+        fetchFeeds,
+        getFormattedDate
+      };
+    }
+
+  });
+</script>
+<style lang="scss" scoped>
+.gaia-carousel {
+  // background-color: rgb(var(--v-theme-secondary));
+  //border-top: 1px solid rgb(var(--v-theme-secondary));
+  //border-bottom: 1px solid rgb(var(--v-theme-secondary));
+}
+</style>

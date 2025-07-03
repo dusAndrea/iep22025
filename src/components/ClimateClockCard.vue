@@ -23,7 +23,7 @@
 
 <script lang="ts">
   import { ref, defineComponent, type PropType, onMounted, onBeforeUnmount } from 'vue';
-  import DefaultCardWrapper from '../DefaultCardWrapper.vue';
+  import DefaultCardWrapper from './DefaultCardWrapper.vue';
   import axios from 'axios';
   import type { ColorAvailable } from '@/types';
 

@@ -1,20 +1,24 @@
 <template>
-  <v-carousel v-if="feeds.length"
-    :continuous="true"
-    :show-arrows="true"
-    delimiter-icon="mdi-square"
-    height="300"
-    hide-delimiter-background>
-    <v-carousel-item v-for="(feed, index) in feeds"
+
+  <Carousel v-if="feeds.length"
+    class="gaia-carousel"
+    v-bind="carouselConfig">
+    <Slide v-for="(feed, index) in feeds"
       :key="index">
       <GaiaFeedArticle :key="index"
         :article="feed" />
-    </v-carousel-item>
-  </v-carousel>
+    </Slide>
+    <template #addons>
+      <Navigation />
+    </template>
+  </Carousel>
+
 </template>
 
 <script lang="ts">
   import { defineComponent, onMounted, ref } from 'vue';
+  import 'vue3-carousel/carousel.css';
+  import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
   import GaiaFeedArticle from './GaiaFeedArticles.vue';
   import { useFeedsStore } from '@/stores';
   import { storeToRefs } from 'pinia';
@@ -24,13 +28,22 @@
   export default defineComponent({
     name: 'GreenFeed',
     components: {
-      GaiaFeedArticle
+      Carousel, Slide, Navigation,
+      GaiaFeedArticle,
+
     },
     setup() {
       const feedStore = useFeedsStore();
       const feeds = ref([] as FeedType[]);
       const { getFeeds } = storeToRefs(feedStore);
       const messagesStore = useMessagesStore();
+      const carouselConfig = {
+        itemsToShow: 4,
+        wrapAround: false,
+        snapAlign: 'start',
+        gap: 20,
+        height: 160
+      };
 
       const fetchFeeds = async () => {
         if (!getFeeds.value.length) {
@@ -50,8 +63,16 @@
       return {
         fetchFeeds,
         feeds,
+        carouselConfig
       };
     }
 
   });
 </script>
+<style lang="scss" scoped>
+.gaia-carousel {
+  // background-color: rgb(var(--v-theme-secondary));
+  //border-top: 1px solid rgb(var(--v-theme-secondary));
+  //border-bottom: 1px solid rgb(var(--v-theme-secondary));
+}
+</style>

@@ -8,10 +8,26 @@ export interface UserType {
 }
 
 export interface FeedType {
+  author: string;
   title: string;
   description: string;
   urlToImage: string;
-  author: string;
+  publishedAt: Date,
+  url: string;
+  content: string;
+}
+
+export interface QuestionOptionsType {
+  text: string;
+  value: number;
+}
+
+export interface QuestionType {
+  answer: number;
+  options: QuestionOptionsType[],
+  question: string;
 }
 
 export type ColorAvailable = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'background';
+
+

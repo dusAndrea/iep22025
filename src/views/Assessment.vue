@@ -30,28 +30,26 @@
                   </v-col>
                 </v-row>
               </v-container>
-
-
             </v-card>
           </Transition>
-
         </v-col>
       </v-row>
     </v-col>
     <v-col cols="12"
       sm="6"
-      lg="5">Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque, officia deserunt exercitationem et asperiores, esse laboriosam porro, eligendi tempora ad aspernatur rerum fuga excepturi! At distinctio rem pariatur nulla tenetur.
+      lg="5">Il tuo storico
     </v-col>
   </v-row>
 </template>
 <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
-  import { Quiz } from '@/components';
+  import { QuizCard } from '@/components';
   import { collection, doc, setDoc, addDoc } from "firebase/firestore";
   import { auth, db } from '@/services/firebaseServices';
+  import { useQuestionsStore } from '@/stores';
   export default defineComponent({
     components: {
-      Quiz
+      Quiz: QuizCard
     },
     setup() {
       const showQuiz = ref(false);
@@ -238,6 +236,8 @@
         }
       ];
 
+      const questionsStore = useQuestionsStore();
+
       const addQuestion = async (question) => {
         try {
           const docRef = await addDoc(collection(db, "questions"), question);
@@ -247,14 +247,12 @@
         }
       };
 
-      const loadQuestionsToDb = (async () => {
-        questions.forEach(async question => {
-          await addQuestion(question);
-        });
+      onMounted(async () => {
+        await questionsStore.fetchRandomQuestions();
       });
 
       return {
-        showQuiz
+        showQuiz,
       };
     }
   });

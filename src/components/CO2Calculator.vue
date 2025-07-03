@@ -93,7 +93,7 @@
   import axios from 'axios';
   import debounce from 'lodash.debounce';
   import CO2CarsDialog from './CO2CarsDialog.vue';
-  import DefaultCardWrapper from '../DefaultCardWrapper.vue';
+  import DefaultCardWrapper from './DefaultCardWrapper.vue';
 
   export default defineComponent({
     name: 'CO2Calculator',

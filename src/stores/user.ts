@@ -3,6 +3,7 @@ import { auth, db } from '@/services/firebaseServices';
 import { collection, query, where, getDoc, deleteDoc, getDocs, addDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
 import { reauthenticateWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, deleteUser } from 'firebase/auth';
 import { type UserType } from '@/types';
+import { FirebaseError } from 'firebase/app';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
@@ -64,7 +65,7 @@ export const useUserStore = defineStore('user', {
           createdAt: new Date()
         });
 
-        this.setUser(user.uid, newUser.email, displayName);
+        this.setUser({ uid: user.uid, email: newUser.email, displayName });
       } catch (error: any) {
         const errorCode = error.code;
         const errorMessage = error.message;
@@ -93,8 +94,6 @@ export const useUserStore = defineStore('user', {
     },
 
     async login(userLogin: UserType): Promise<void> {
-      let message = 'Errore di autenticazione';
-
       try {
         const userCredential = await signInWithEmailAndPassword(auth, userLogin.email, userLogin.password);
         const user = userCredential.user;
@@ -108,26 +107,7 @@ export const useUserStore = defineStore('user', {
           throw new Error(message);
         }
       } catch (error: any) {
-        switch (error.code) {
-          case 'auth/user-not-found':
-            message = 'Utente non trovato';
-            break;
-          case 'auth/wrong-password':
-            message = 'Password errata';
-            break;
-          case 'auth/invalid-email':
-            message = 'Email non valida';
-            break;
-          case 'auth/too-many-requests':
-            message = 'Troppi tentativi. Riprova più tardi.';
-            break;
-          case 'auth/network-request-failed':
-            message = 'Errore di rete. Verifica la connessione.';
-            break;
-          default:
-            console.error('Errore autenticazione non gestito:', error.code, error.message);
-            break;
-        }
+        throw new Error(error);
       }
     },
 

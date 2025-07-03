@@ -58,16 +58,16 @@
         <template v-slot:activator="{ props }">
           <v-btn icon
             v-bind="props">
-            <v-avatar color="red"
+            <v-avatar color="text"
               size="large">
-              <span class="text-h5">{{ getShortDisplayName }}</span>
+              <span class="text-h6">{{ getShortDisplayName }}</span>
             </v-avatar>
           </v-btn>
         </template>
         <v-card>
           <v-card-text>
             <div class="mx-auto text-center">
-              <v-avatar color="brown">
+              <v-avatar color="text">
                 <span class="text-h5">{{ getShortDisplayName }}</span>
               </v-avatar>
               <h3>{{ getDisplayName }}</h3>
@@ -137,12 +137,12 @@
   import { storeToRefs } from 'pinia';
   import { useRouter } from 'vue-router';
   import { useRoute } from 'vue-router';
-  import { DesktopToggle, MobileToggle } from './DarkLightToggleTheme';
+  import { DesktopTheme, MobileTheme } from './';
 
   export default defineComponent({
     components: {
-      DesktopToggle,
-      MobileToggle
+      DesktopToggle: DesktopTheme,
+      MobileToggle: MobileTheme
     },
     setup() {
       const theme = useTheme();
@@ -156,32 +156,38 @@
       // TODO: controllare modalità responsive
 
       const links = computed(() => [
+
+        {
+          to: '/wall',
+          text: 'Wall',
+          icon: 'mdi-newspaper-variant-outline',
+          color: isDark.value ? 'accent' : 'text',
+        },
+        {
+          to:
+            '/assessment',
+          text: 'Assessment',
+          icon: 'mdi-help-circle-outline',
+          color: isDark.value ? 'accent' : 'text',
+        },
+        {
+          to: '/profile',
+          text: 'Profile',
+          icon: 'mdi-account-circle',
+          color: isDark.value ? 'accent' : 'text',
+        },
+        {
+          to: '/about',
+          text: 'About',
+          icon: 'mdi-information-outline',
+          color: isDark.value ? 'primary' : 'text',
+        },
         // {
         //   to: '/',
         //   text: 'Home',
         //   icon: 'mdi-home',
         //   color: '#4CAF50', // Verde
         // },
-        {
-          to:
-            '/quiz',
-          text: 'Quiz',
-          icon: 'mdi-help-circle-outline',
-          color: isDark.value ? 'accent' : 'accent',
-        },
-        {
-          to: '/profile',
-          text: 'Profile',
-          icon: 'mdi-account-circle',
-          color: isDark.value ? 'accent' : 'accent',
-        },
-        // {
-        //   to: '/news',
-        //   text: 'News',
-        //   icon: 'mdi-newspaper-variant-outline',
-        //   color: isDark.value ? 'secondary' : 'secondary',
-
-
         // },
         // {
         //   to: '/analytics',
@@ -195,12 +201,6 @@
         //   icon: 'mdi-map-marker-radius',
         //   color: '#9C27B0', // Viola
         // },
-        {
-          to: '/about',
-          text: 'About',
-          icon: 'mdi-information-outline',
-          color: isDark.value ? 'primary' : 'primary',
-        },
       ]);
 
       const isDark = computed(() => theme.global.name.value === 'dark');
@@ -218,7 +218,7 @@
       const logout = (() => {
         userStore.logout();
         feedsStore.clearFeeds();
-        router.push({name: 'login'});
+        router.push({ name: 'login' });
       });
 
       const toggleTheme = () => {

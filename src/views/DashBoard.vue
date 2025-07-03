@@ -6,22 +6,24 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col cols="12"
-      md="6"
-      lg="7">
-      <v-row>
-        <v-col cols="12">
-          <CO2Calculator title="Emissioni di CO₂"
-            subtitle="Quanto hai inquinato per arrivare qui?"
-            icon="mdi-sprout-outline" />
-        </v-col>
+    <v-col cols="12">
+      <DefaultCardWrapper>
+        <template #cardContent>
+          <v-row>
+            <v-col>
+              <CO2Calculator title="Emissioni di CO₂"
+                subtitle="Quanto hai inquinato per arrivare qui?"
+                icon="mdi-sprout-outline" />
+            </v-col>
 
-        <v-col cols="12">
-          <ClimateClock title="Siamo in ritardo"
-            subtitle="Quanto tempo ci manca"
-            icon="mdi-leaf-circle-outline" />
-        </v-col>
-      </v-row>
+            <v-col>
+              <ClimateClockCard title="Siamo in ritardo"
+                subtitle="Quanto tempo ci manca"
+                icon="mdi-leaf-circle-outline" />
+            </v-col>
+          </v-row>
+        </template>
+      </DefaultCardWrapper>
     </v-col>
   </v-row>
   <v-row>
@@ -39,13 +41,13 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { CO2Calculator, ClimateClock } from '@/components';
-
+  import { CO2Calculator, ClimateClockCard, DefaultCardWrapper } from '@/components';
   export default defineComponent({
     name: 'DashBoard',
     components: {
+      DefaultCardWrapper,
       CO2Calculator,
-      ClimateClock
+      ClimateClockCard
     },
   });
 </script>

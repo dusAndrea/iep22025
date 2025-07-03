@@ -23,11 +23,9 @@
     props: {
       title: {
         type: String,
-        required: true
       },
       subtitle: {
         type: String,
-        required: true
       },
       color: {
         type: String as PropType<ColorAvailable>,

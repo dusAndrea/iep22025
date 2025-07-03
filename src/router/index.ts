@@ -1,6 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { LoggedLayout, UnloggedLayout } from '@/layouts';
-import { About, DashBoard, Login, NotFound, Profile, Quiz, Register } from '@/views';
+import { About, DashBoard, Login, NotFound, Profile, Assessment, Register, Wall } from '@/views';
 import { useUserStore } from '@/stores';
 
 const router = createRouter({
@@ -22,9 +22,9 @@ const router = createRouter({
           component: DashBoard,
         },
         {
-          path: 'quiz',
-          name: 'Quiz',
-          component: Quiz,
+          path: 'assessment',
+          name: 'Assessment',
+          component: Assessment,
         },
         {
           path: 'profile',
@@ -35,6 +35,11 @@ const router = createRouter({
           path: 'about',
           name: 'About',
           component: About,
+        },
+        {
+          path: 'wall',
+          name: 'Wall',
+          component: Wall,
         },
       ],
     },
