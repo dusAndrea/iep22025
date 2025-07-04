@@ -127,10 +127,9 @@
   import { useTheme } from 'vuetify';
   import lightLogo from '@/assets/logo_nobg_light.png';
   import darkLogo from '@/assets/logo_nobg_dark.png';
-  import { useUserStore } from '@/stores/user';
+  import { useUserStore, useMessagesStore } from '@/stores';
   import { useRouter } from 'vue-router';
   import taglineImage from '@/assets/tagline_opacity.png';
-  import { useMessagesStore } from '@/stores/messages';
   import { useValidationRules } from '@/composables';
   import type { UserType } from '@/types';
 
@@ -170,7 +169,7 @@
 
           messagesStore.showMessage('Utente creato con successo', 'success');
 
-          router.push({name: 'login'});
+          router.push({ name: 'login' });
         } catch (e: any) {
           messagesStore.showMessage(e.message, 'error');
         } finally {

@@ -2,53 +2,41 @@
   <v-row>
     <v-col cols="12">
       <h1 class="text-text">Quante ne sai?</h1>
-      <h3 class="text-primary">Spara&hellip; se ti riesce</h3>
+      <h3 class="text-primary">Metitti alla prova con il quiz!</h3>
     </v-col>
-  </v-row>
-  <v-row>
-    <v-col cols="12"
-      sm="8"
-      lg="8">
-      <v-row>
-        <v-col cols="12">
-          <Transition>
-            <Quiz v-if="showQuiz" />
 
-            <v-card class="pa-4 mx-auto"
-              v-else>
-              <v-container>
-                <v-row>
-                  <v-col>
-                    <h3>Quanto informato sei in fatto di sostenibilità ambientale?</h3>
-                  </v-col>
-                </v-row>
-                <v-row align="center"
-                  justify="center">
-                  <v-col>
-                    <v-btn @click="showQuiz = !showQuiz">Inizia il quiz</v-btn>
-                  </v-col>
-                </v-row>
-              </v-container>
-            </v-card>
+    <v-col cols="8">
+      <DefaultCardWrapper :title="'Quanto informato sei in fatto di sostenibilità ambientale?'"
+        icon="mdi-head-question-outline">
+        <template #cardContent>
+          <Transition>
+            <Questions v-if="showQuiz" />
+            <div v-else
+              class="text-center">
+              <v-btn @click="showQuiz = !showQuiz">Inizia il quiz</v-btn>
+            </div>
           </Transition>
-        </v-col>
-      </v-row>
+        </template>
+      </DefaultCardWrapper>
     </v-col>
-    <v-col cols="12"
-      sm="4"
-      lg="4">Il tuo storico
+
+    <v-col cols="4">
+      <History title="Storico Quiz"
+        icon="mdi-chart-box-multiple-outline" />
     </v-col>
   </v-row>
 </template>
 <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
-  import { QuizCard } from '@/components';
-  import { collection, doc, setDoc, addDoc } from "firebase/firestore";
-  import { auth, db } from '@/services/firebaseServices';
+  import { AssessmentQuestions, AssessmentHistory, DefaultCardWrapper } from '@/components';
+  import { collection, addDoc } from "firebase/firestore";
+  import { db } from '@/services/firebaseServices';
   import { useQuestionsStore } from '@/stores';
   export default defineComponent({
     components: {
-      Quiz: QuizCard
+      Questions: AssessmentQuestions,
+      DefaultCardWrapper,
+      History: AssessmentHistory
     },
     setup() {
       const showQuiz = ref(false);

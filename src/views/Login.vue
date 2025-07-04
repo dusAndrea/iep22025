@@ -92,7 +92,7 @@
       const formIsValid = ref(false);
       const router = useRouter();
       const userStore = useUserStore();
-      const feedbackStore = useMessagesStore();
+      const messagesStore = useMessagesStore();
       const loading = ref(false);
       const imgPath = computed(() => theme.global.name.value === 'dark' ? darkLogo : lightLogo);
       const { getFirebaseAuthErrorMessage } = useFirebaseAuthError();
@@ -111,7 +111,7 @@
         catch (error: any) {
           const code = error.code || '';
           const message = getFirebaseAuthErrorMessage(code);
-          feedbackStore.showMessage(message, 'error');
+          messagesStore.showMessage(message, 'error');
         } finally {
           loading.value = false;
         }

@@ -1,15 +1,15 @@
 import { defineStore } from 'pinia';
 import { auth, db } from '@/services/firebaseServices';
-import { collection, query, where, getDoc, deleteDoc, getDocs, addDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
-import { reauthenticateWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, deleteUser } from 'firebase/auth';
-import { type UserType } from '@/types';
-import { FirebaseError } from 'firebase/app';
+import { getDoc, deleteDoc, doc, setDoc, getDocs, where, orderBy, updateDoc, query, collection } from 'firebase/firestore';
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, deleteUser } from 'firebase/auth';
+import type { UserType, QuizType } from '@/types';
 
 export const useUserStore = defineStore('user', {
   state: () => ({
     uid: null as string | null,
     displayName: null as string | null,
     email: null as string | null,
+    quizHistory: [] as QuizType[]
   }),
   persist: true,
   getters: {
@@ -21,12 +21,18 @@ export const useUserStore = defineStore('user', {
       const firstLetters = words?.map((word) => word[0]);
       return firstLetters?.join("");
     },
+    getUID: state => state.uid,
+    getQuizHistory: state => state.quizHistory
   },
   actions: {
     setUser(user: { uid: string; displayName?: string; email?: string; }) {
       this.uid = user.uid;
       this.displayName = user.displayName || '';
       this.email = user.email || '';
+    },
+
+    setQuiz(quizArray: QuizType[]) {
+      this.quizHistory = quizArray;
     },
 
     async deleteAccount(): Promise<void> {
@@ -49,6 +55,7 @@ export const useUserStore = defineStore('user', {
       this.uid = null;
       this.displayName = null;
       this.email = null;
+      this.quizHistory = [];
     },
 
     async register(newUser: UserType): Promise<void> {
@@ -128,6 +135,20 @@ export const useUserStore = defineStore('user', {
         this.setUser({ uid: currentUser?.uid, displayName: userPayload.displayName, email: userPayload?.email });
       } catch (error: any) {
         throw new Error('Errore durante l\'aggiornamento:');
+      }
+    },
+
+    async fetchQuizHistory() {
+      if (!this.uid) {
+        return;
+      }
+
+      try {
+        const q = query(collection(db, 'quizResults'), where('userId', '==', this.uid), orderBy('date', 'desc'));
+        const snap = await getDocs(q);
+        this.setQuiz(snap.docs.map(doc => doc.data()));
+      } catch {
+        console.log('Errore recupero dati');
       }
     }
   },

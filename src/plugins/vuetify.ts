@@ -13,31 +13,31 @@ export default createVuetify({
     themes: {
       light: {
         colors: {
-          background: '#F5FBEF',  // verde chiarissimo
+          background: '#F5FBEF',
           surface: '#FFFFFF',
-          primary: '#A0D1A2',     // verde sostenibile
-          secondary: '#8BC34A',   // verde più chiaro
-          accent: '#009688',      // blu acqua
+          primary: '#388E3C',     // verde foresta
+          secondary: '#689F38',   // verde oliva
+          accent: '#00796B',      // acqua profonda
           info: '#4DD0E1',
-          warning: '#FFC107',
-          error: '#FF5252',
+          warning: '#F9A825',     // giallo ocra più visibile
+          error: '#D32F2F',
           success: '#388E3C',
-          text: '#034a43',
-          quiz: '#FF5722',
+          text: '#1B5E20',
+          quiz: '#D84315',        // terracotta (più soft di #FF5722)
         },
       },
       dark: {
         colors: {
           background: '#121212',
           surface: '#1E1E1E',
-          primary: '#81C784',     // verde soft ma visibile su sfondo scuro
-          secondary: '#AED581',   // verde lime più chiaro
-          accent: '#26A69A',      // teal intenso per accent
+          primary: '#81C784',
+          secondary: '#AED581',
+          accent: '#26A69A',
           info: '#4DD0E1',
-          warning: '#FFC107',
+          warning: '#FBC02D',
           error: '#EF5350',
           success: '#66BB6A',
-          text: '#E0F2F1',         // quasi bianco con leggero tono verde acqua
+          text: '#E0F2F1',
           quiz: '#FF8A65',
         },
       }

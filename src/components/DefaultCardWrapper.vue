@@ -5,7 +5,7 @@
     :flat="flat"
     class="fill-height">
     <v-card-subtitle class="text-text">{{ subtitle }}</v-card-subtitle>
-    <template v-slot:prepend>
+    <template v-slot:prepend v-if="icon">
       <v-icon size="x-large"
         color="success">{{ icon }}</v-icon>
     </template>

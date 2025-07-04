@@ -1,9 +1,7 @@
 import { defineStore } from 'pinia';
-import { auth, db } from '@/services/firebaseServices';
-import { collection, query, where, getDoc, deleteDoc, getDocs, addDoc, doc, setDoc, updateDoc } from 'firebase/firestore';
-import { reauthenticateWithCredential, signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, deleteUser } from 'firebase/auth';
-import { type QuestionType } from '@/types';
-import { FirebaseError } from 'firebase/app';
+import { db } from '@/services/firebaseServices';
+import { collection, query, where, orderBy, getDocs, doc, addDoc, updateDoc, arrayUnion } from 'firebase/firestore';
+import type { QuestionType, UserType } from '@/types';
 
 export const useQuestionsStore = defineStore('questions', {
   state: () => ({
@@ -31,6 +29,27 @@ export const useQuestionsStore = defineStore('questions', {
       // Shuffle + slice
       const shuffled = allQuestions.sort(() => 0.5 - Math.random());
       this.questions = shuffled.slice(0, limit);
+    },
+
+    async submitAssesment(payload: any) {
+      try {
+        await addDoc(collection(db, 'quizResults'), payload);
+        console.log('Risultato salvato con successo!');
+      } catch {
+        throw new Error('Errore nel salvataggio');
+      }
+    },
+
+    async fetchQuizHistory(userUID: string) {
+      try {
+        const q = query(collection(db, 'quizResults'), where('userId', '==', userUID), orderBy('date', 'desc'));
+        const snap = await getDocs(q);
+        return snap.docs.map(doc => doc.data());
+      } catch {
+        throw new Error('Errore recupero dati');
+      }
     }
+
+
   }
 });

@@ -1,3 +1,33 @@
+/* Light theme colors */
+:root {
+  --v-background: #f5fbef;
+  --v-surface: #ffffff;
+  --v-primary: #388e3c;
+  --v-secondary: #689f38;
+  --v-accent: #00796b;
+  --v-info: #4dd0e1;
+  --v-warning: #f9a825;
+  --v-error: #d32f2f;
+  --v-success: #388e3c;
+  --v-text: #1b5e20;
+  --v-quiz: #d84315;
+}
+
+/* Dark theme colors */
+[data-theme="dark"] {
+  --v-background: #121212;
+  --v-surface: #1e1e1e;
+  --v-primary: #81c784;
+  --v-secondary: #aed581;
+  --v-accent: #26a69a;
+  --v-info: #4dd0e1;
+  --v-warning: #fbc02d;
+  --v-error: #ef5350;
+  --v-success: #66bb6a;
+  --v-text: #e0f2f1;
+  --v-quiz: #ff8a65;
+}
+
 /* Transition style */
 .v-enter-active,
 .v-leave-active {

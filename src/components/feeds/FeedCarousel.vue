@@ -19,7 +19,7 @@
   import { defineComponent, onMounted, ref } from 'vue';
   import 'vue3-carousel/carousel.css';
   import { Carousel, Slide, Pagination, Navigation } from 'vue3-carousel';
-  import GaiaFeedArticle from './GaiaFeedArticles.vue';
+  import FeedArticles from './FeedArticles.vue';
   import { useFeedsStore } from '@/stores';
   import { storeToRefs } from 'pinia';
   import type { FeedType } from '@/types';
@@ -29,7 +29,7 @@
     name: 'GreenFeed',
     components: {
       Carousel, Slide, Navigation,
-      GaiaFeedArticle,
+      FeedArticles,
 
     },
     setup() {

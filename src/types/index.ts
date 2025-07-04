@@ -1,3 +1,5 @@
+import type { Timestamp } from 'firebase/firestore';
+
 export interface UserType {
   id: string,
   firstName: string;
@@ -30,4 +32,17 @@ export interface QuestionType {
 
 export type ColorAvailable = 'primary' | 'secondary' | 'success' | 'error' | 'warning' | 'info' | 'background';
 
+export type QuizAnswerType = {
+  question: string;
+  selected: string | number;
+  correct: string | number;
+  isCorrect: boolean;
+};
 
+export type QuizType = {
+  userId: string;
+  date: string | Timestamp;
+  score: number;
+  total: number;
+  answers: QuizAnswerType[];
+};

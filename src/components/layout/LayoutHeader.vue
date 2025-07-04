@@ -137,13 +137,13 @@
   import { storeToRefs } from 'pinia';
   import { useRouter } from 'vue-router';
   import { useRoute } from 'vue-router';
-  import DesktopTheme from '@/components/DesktopTheme.vue';
-  import MobileTheme from '@/components/MobileTheme.vue';
+  import ResponsiveDesktop from '@/components/responsive/ResponsiveDesktop.vue';
+  import ResponsiveMobile from '@/components/responsive/ResponsiveMobile.vue';
 
   export default defineComponent({
     components: {
-      DesktopToggle: DesktopTheme,
-      MobileToggle: MobileTheme
+      DesktopToggle: ResponsiveDesktop,
+      MobileToggle: ResponsiveMobile
     },
     setup() {
       const theme = useTheme();

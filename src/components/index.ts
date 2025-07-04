@@ -1,29 +1,48 @@
+// assessment
+import AssessmentQuestions from './assessment/AssessmentQuestions.vue';
+import AssessmentHistory from './assessment/AssessmentHistory.vue';
+
+// feeds
+import FeedArticles from './feeds/FeedArticles.vue';
+import FeedCarousel from './feeds/FeedCarousel.vue';
+
+// layout
+import LayoutHeader from "./layout/LayoutHeader.vue";
+import LayoutFooter from './layout/LayoutFooter.vue';
+
+// responsive
+import ResponsiveDesktop from "./responsive/ResponsiveDesktop.vue";
+import ResponsiveMobile from "./responsive/ResponsiveMobile.vue";
+
 import CO2Calculator from './CO2Calculator.vue';
 import CO2CarsDialog from "./CO2CarsDialog.vue";
 import DefaultCardWrapper from './DefaultCardWrapper.vue';
-import DesktopTheme from "./DesktopTheme.vue";
-import Footer from './Footer.vue';
-import GaiaFeedArticles from './GaiaFeedArticles.vue';
-import GaiaFeedCarousel from './GaiaFeedCarousel.vue';
+
+
+
 import GlobalSnackbar from "./GlobalSnackbar.vue";
-import Header from "./Header.vue";
+
 import LineChart from "./LineChart.vue";
-import MobileTheme from "./MobileTheme.vue";
-import QuizCard from './QuizCard.vue';
+
 import TagLineCard from './Tagline.vue';
 
 export {
+  AssessmentQuestions,
+  AssessmentHistory,
+  FeedArticles,
+  FeedCarousel,
+  LayoutHeader,
+  LayoutFooter,
+  ResponsiveDesktop,
+  ResponsiveMobile,
   CO2Calculator,
   CO2CarsDialog,
   DefaultCardWrapper,
-  DesktopTheme,
-  Footer,
-  GaiaFeedArticles,
-  GaiaFeedCarousel,
+
+
+
   GlobalSnackbar,
-  Header,
+
   LineChart,
-  MobileTheme,
-  QuizCard,
   TagLineCard
 };

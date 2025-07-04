@@ -27,14 +27,14 @@
   import { RouterView } from 'vue-router';
   import { defineComponent } from 'vue';
   import { TagLineCard, GlobalSnackbar } from '@/components';
-  import FooterBar from '@/components/Footer.vue';
+  import { LayoutFooter } from '@/components';
   export default defineComponent({
     name: 'App',
     components: {
       RouterView,
       TagLineCard,
       GlobalSnackbar,
-      FooterBar
+      FooterBar: LayoutFooter
     },
   });
 </script>
