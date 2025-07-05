@@ -1,5 +1,5 @@
 <template>
-  <DefaultCardWrapper :title="title"
+  <LayoutCardWrapper :title="title"
     :subtitle="subtitle">
     <template #cardContent>
       <v-container fluid
@@ -89,7 +89,7 @@
         {{ error }}
       </v-alert>
     </template>
-  </DefaultCardWrapper>
+  </LayoutCardWrapper>
 </template>
 
 <script lang="ts">
@@ -97,12 +97,12 @@
   import axios from 'axios';
   import debounce from 'lodash.debounce';
   import DashboardDialog from './DashboardDialog.vue';
-  import { DefaultCardWrapper } from '@/components';
-
+  import { LayoutCardWrapper } from '@/components';
+  import { OPENROUTESERVICE_API_KEY } from '@/services/api';
   export default defineComponent({
     name: 'CO2Calculator',
     components: {
-      DefaultCardWrapper,
+      LayoutCardWrapper,
       DashboardDialog
     },
     props: {
@@ -128,7 +128,7 @@
       const endSearch = ref('');
       const startController = ref<AbortController | null>(null);
       const endController = ref<AbortController | null>(null);
-      const OPENROUTESERVICE_API_KEY = '5b3ce3597851110001cf6248350a055ef9cd402b906676eb2e1c2c56';
+      // const OPENROUTESERVICE_API_KEY = '5b3ce3597851110001cf6248350a055ef9cd402b906676eb2e1c2c56';
 
       const travelChoice = ref<string | null>(null);
 

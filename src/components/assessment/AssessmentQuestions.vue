@@ -6,7 +6,7 @@
           color="primary"
           class="ma-auto" />
       </v-card>
-      <DefaultCardWrapper v-else-if="!quizCompleted && questions.length"
+      <LayoutCardWrapper v-else-if="!quizCompleted && questions.length"
         :title="title"
         flat>
         <template #cardContent>
@@ -27,8 +27,8 @@
           <v-btn :disabled="userAnswer === null"
             @click="handleSave">Avanti</v-btn>
         </template>
-      </DefaultCardWrapper>
-      <DefaultCardWrapper v-else
+      </LayoutCardWrapper>
+      <LayoutCardWrapper v-else
         title="Risultato"
         flat>
         <template #cardContent>
@@ -41,7 +41,7 @@
             </v-row>
           </v-container>
         </template>
-      </DefaultCardWrapper>
+      </LayoutCardWrapper>
     </Transition>
   </v-form>
 </template>
@@ -50,10 +50,10 @@
   import { useQuestionsStore, useUserStore, useMessagesStore } from '@/stores';
   import type { QuestionType } from '@/types';
   import { storeToRefs } from 'pinia';
-  import DefaultCardWrapper from '@/components/DefaultCardWrapper.vue';
+  import LayoutCardWrapper from '@/components/layout/LayoutCardWrapper.vue';
   export default defineComponent({
     components: {
-      DefaultCardWrapper
+      LayoutCardWrapper
     },
     setup() {
       const questionsStore = useQuestionsStore();

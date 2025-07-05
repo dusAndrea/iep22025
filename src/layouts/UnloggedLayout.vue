@@ -8,7 +8,7 @@
           no-gutters>
           <v-col md="6"
             class="d-none d-md-block">
-            <TagLineCard />
+            <LayoutTagline />
           </v-col>
           <v-col cols="12"
             sm="8"
@@ -26,13 +26,13 @@
 <script lang="ts">
   import { RouterView } from 'vue-router';
   import { defineComponent } from 'vue';
-  import { TagLineCard, LayoutSnackbar } from '@/components';
+  import { LayoutTagline, LayoutSnackbar } from '@/components';
   import { LayoutFooter } from '@/components';
   export default defineComponent({
     name: 'App',
     components: {
       RouterView,
-      TagLineCard,
+      LayoutTagline,
       LayoutSnackbar,
       FooterBar: LayoutFooter
     },

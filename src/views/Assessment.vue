@@ -7,7 +7,7 @@
 
     <v-col cols="12"
       md="6">
-      <DefaultCardWrapper title="Spara, se ti riesce (cit.)"
+      <LayoutCardWrapper title="Spara, se ti riesce (cit.)"
         icon="mdi-head-question-outline">
         <template #cardContent>
           <Transition>
@@ -18,7 +18,7 @@
             </div>
           </Transition>
         </template>
-      </DefaultCardWrapper>
+      </LayoutCardWrapper>
     </v-col>
 
     <v-col cols="12"
@@ -30,14 +30,14 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, onMounted } from 'vue';
-  import { AssessmentQuestions, AssessmentHistory, DefaultCardWrapper } from '@/components';
+  import { AssessmentQuestions, AssessmentHistory, LayoutCardWrapper } from '@/components';
   import { collection, addDoc } from "firebase/firestore";
   import { db } from '@/services/firebaseServices';
   import { useQuestionsStore } from '@/stores';
   export default defineComponent({
     components: {
       Questions: AssessmentQuestions,
-      DefaultCardWrapper,
+      LayoutCardWrapper,
       History: AssessmentHistory
     },
     setup() {

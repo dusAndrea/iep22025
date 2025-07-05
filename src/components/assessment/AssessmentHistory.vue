@@ -1,5 +1,5 @@
 <template>
-  <DefaultCardWrapper :title="'Quanto informato sei in fatto di sostenibilità ambientale?'">
+  <LayoutCardWrapper :title="'Quanto informato sei in fatto di sostenibilità ambientale?'">
     <template #cardContent>
       <div v-if="getQuizHistory.length">
         <v-expansion-panels multiple>
@@ -37,17 +37,17 @@
         </v-alert>
       </div>
     </template>
-  </DefaultCardWrapper>
+  </LayoutCardWrapper>
 </template>
 <script lang="ts">
   import { defineComponent, onMounted } from 'vue';
-  import DefaultCardWrapper from '@/components/DefaultCardWrapper.vue';
+  import { LayoutCardWrapper } from '@/components';
   import { useUserStore, useMessagesStore } from '@/stores';
   import { storeToRefs } from 'pinia';
   import { formatDate } from '@/composables';
   export default defineComponent({
     components: {
-      DefaultCardWrapper
+      LayoutCardWrapper
     },
     setup() {
       const userStore = useUserStore();
