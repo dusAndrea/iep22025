@@ -38,7 +38,8 @@
 
           <div class="d-flex flex-column text-truncate">
             <strong class="text-truncate">{{ feed.author }}</strong>
-            <span class="text-medium-emphasis">{{ getFormattedDate(feed.publishedAt) }}</span>
+
+            <span class="text-medium-emphasis">{{ formatDate(feed.publishedAt) }}</span>
           </div>
           <v-btn :border="true"
             primary
@@ -56,6 +57,7 @@
   import { storeToRefs } from 'pinia';
   import type { FeedType } from '@/types';
   import { useMessagesStore } from '@/stores';
+  import { formatDate } from '@/composables';
 
   export default defineComponent({
     name: 'GreenFeed',
@@ -85,18 +87,6 @@
         feeds.value = getFeeds.value;
       };
 
-      const getFormattedDate = (articleDate: Date) => {
-        if (articleDate) {
-          return new Date(articleDate).toLocaleDateString('en-GB', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric',
-            timeZone: 'UTC',
-          });
-        }
-        return '';
-      };
-
       onMounted(() => {
         fetchFeeds();
       });
@@ -104,8 +94,8 @@
       return {
         feeds,
         carouselConfig,
+        formatDate,
         fetchFeeds,
-        getFormattedDate
       };
     }
 

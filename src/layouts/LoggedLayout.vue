@@ -1,6 +1,6 @@
 <template>
   <v-app :full-height="true">
-    <GlobalSnackbar />
+    <LayoutSnackbar />
 
     <HeaderBar />
 
@@ -23,7 +23,7 @@
 </template>
 <script lang="ts">
   import { RouterView } from 'vue-router';
-  import { LayoutHeader, GlobalSnackbar, LayoutFooter } from '@/components';
+  import { LayoutHeader, LayoutFooter, LayoutSnackbar } from '@/components';
   import { defineComponent } from 'vue';
 
   export default defineComponent({
@@ -31,7 +31,7 @@
     components: {
       HeaderBar: LayoutHeader,
       RouterView,
-      GlobalSnackbar,
+      LayoutSnackbar,
       FooterBar: LayoutFooter,
     },
   });

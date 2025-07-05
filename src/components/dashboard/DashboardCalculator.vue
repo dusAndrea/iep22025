@@ -2,11 +2,13 @@
   <DefaultCardWrapper :title="title"
     :subtitle="subtitle">
     <template #cardContent>
-      <v-container fluid>
+      <v-container fluid
+        class="p-0">
         <v-row>
           <v-col cols="12"
             lg="6">
             <v-autocomplete v-model="startQuery"
+              v-model:search="startSearch"
               :items="startSuggestions"
               label="Digita l'indirizzo di partenza"
               :loading="loadingStart"
@@ -18,6 +20,7 @@
           <v-col cols="12"
             lg="6">
             <v-autocomplete v-model="endQuery"
+              v-model:search="endSearch"
               :items="endSuggestions"
               label="Digita l'indirizzo di arrivo"
               :loading="loadingEnd"
@@ -28,7 +31,7 @@
           </v-col>
         </v-row>
         <v-row>
-          <v-col>
+          <v-col cols="12">
             <v-select v-model="travelChoice"
               :items="travelMode"
               label="Che mezzo usi?"
@@ -37,14 +40,16 @@
         </v-row>
 
         <v-row>
-          <v-col cols="6">
+          <v-col cols="12"
+            lg="6">
             <v-select :disabled="travelChoice !== 'car'"
               v-model="carChoiceChoice"
               :items="carType"
               label="Che tipo di auto hai??"
               outlined />
           </v-col>
-          <v-col cols="6">
+          <v-col cols="12"
+            lg="6">
             <v-select :disabled="travelChoice !== 'car'"
               v-model="carSizeChoice"
               :items="carSize"
@@ -55,7 +60,7 @@
 
         <v-row>
           <v-col>
-            <CO2CarsDialog />
+            <DashboardDialog />
           </v-col>
 
           <v-col class="d-flex justify-end">
@@ -91,14 +96,14 @@
   import { defineComponent, ref } from 'vue';
   import axios from 'axios';
   import debounce from 'lodash.debounce';
-  import CO2CarsDialog from './CO2CarsDialog.vue';
-  import DefaultCardWrapper from './DefaultCardWrapper.vue';
+  import DashboardDialog from './DashboardDialog.vue';
+  import { DefaultCardWrapper } from '@/components';
 
   export default defineComponent({
     name: 'CO2Calculator',
     components: {
       DefaultCardWrapper,
-      CO2CarsDialog
+      DashboardDialog
     },
     props: {
       title: {
@@ -119,7 +124,8 @@
       const loadingEnd = ref(false);
       const result = ref(null);
       const error = ref('');
-
+      const startSearch = ref('');
+      const endSearch = ref('');
       const startController = ref<AbortController | null>(null);
       const endController = ref<AbortController | null>(null);
       const OPENROUTESERVICE_API_KEY = '5b3ce3597851110001cf6248350a055ef9cd402b906676eb2e1c2c56';
@@ -185,12 +191,12 @@
         searchPlaces(q, endController, endSuggestions, loadingEnd), 400);
 
       const handleStartSearch = (query: string) => {
-        if (query.length < startQuery.value.length) return; // evita se sta cancellando
+        if (query.length < 3) return;
         debouncedStartSearch(query);
       };
 
       const handleEndSearch = (query: string) => {
-        if (query.length < endQuery.value.length) return;
+        if (query.length < 3) return;
         debouncedEndSearch(query);
       };
 
@@ -245,6 +251,8 @@
         carSize,
         carSizeChoice,
         carType,
+        startSearch,
+        endSearch,
         handleStartSearch,
         handleEndSearch,
         calculateEmissions,

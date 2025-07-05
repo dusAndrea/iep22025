@@ -154,10 +154,14 @@
       const feedsStore = useFeedsStore();
       const drawer = ref(false);
       const { getDisplayName, getEmail, getShortDisplayName } = storeToRefs(userStore);
-      // TODO: controllare modalità responsive
 
       const links = computed(() => [
-
+        {
+          to: '/dashboard',
+          text: 'Dashboard',
+          icon: 'mdi-view-dashboard-outline',
+          color: isDark.value ? 'accent' : 'text',
+        },
         {
           to: '/wall',
           text: 'Wall',
@@ -174,7 +178,7 @@
         {
           to: '/profile',
           text: 'Profile',
-          icon: 'mdi-account-circle',
+          icon: 'mdi-account-circle-outline',
           color: isDark.value ? 'accent' : 'text',
         },
         {
@@ -183,25 +187,6 @@
           icon: 'mdi-information-outline',
           color: isDark.value ? 'primary' : 'text',
         },
-        // {
-        //   to: '/',
-        //   text: 'Home',
-        //   icon: 'mdi-home',
-        //   color: '#4CAF50', // Verde
-        // },
-        // },
-        // {
-        //   to: '/analytics',
-        //   text: 'Analytics',
-        //   icon: 'mdi-chart-line',
-        //   color: '#FF9800', // Arancione
-        // },
-        // {
-        //   to: '/map',
-        //   text: 'Map',
-        //   icon: 'mdi-map-marker-radius',
-        //   color: '#9C27B0', // Viola
-        // },
       ]);
 
       const isDark = computed(() => theme.global.name.value === 'dark');

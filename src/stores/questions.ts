@@ -38,18 +38,6 @@ export const useQuestionsStore = defineStore('questions', {
       } catch {
         throw new Error('Errore nel salvataggio');
       }
-    },
-
-    async fetchQuizHistory(userUID: string) {
-      try {
-        const q = query(collection(db, 'quizResults'), where('userId', '==', userUID), orderBy('date', 'desc'));
-        const snap = await getDocs(q);
-        return snap.docs.map(doc => doc.data());
-      } catch {
-        throw new Error('Errore recupero dati');
-      }
     }
-
-
   }
 });

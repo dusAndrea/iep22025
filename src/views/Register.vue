@@ -156,7 +156,6 @@
 
       const handleRegister = async () => {
         try {
-          // TODO: intercettare errore 400 da firebase
           loading.value = true;
           const payload = {
             firstName: firstName.value,

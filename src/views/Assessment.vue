@@ -5,8 +5,9 @@
       <h3 class="text-primary">Metitti alla prova con il quiz!</h3>
     </v-col>
 
-    <v-col cols="8">
-      <DefaultCardWrapper :title="'Quanto informato sei in fatto di sostenibilità ambientale?'"
+    <v-col cols="12"
+      md="6">
+      <DefaultCardWrapper title="Spara, se ti riesce (cit.)"
         icon="mdi-head-question-outline">
         <template #cardContent>
           <Transition>
@@ -20,7 +21,8 @@
       </DefaultCardWrapper>
     </v-col>
 
-    <v-col cols="4">
+    <v-col cols="12"
+      md="6">
       <History title="Storico Quiz"
         icon="mdi-chart-box-multiple-outline" />
     </v-col>

@@ -90,13 +90,5 @@
     flex-direction: column;
     padding: 10px;
   }
-
-  &__author {
-
-  }
-
-  &__title {
-
-  }
 }
 </style>

@@ -119,7 +119,6 @@ export const useUserStore = defineStore('user', {
     },
 
     async update(userPayload: any): Promise<void> {
-      // TODO: terminare il processo di aggiornamento
       try {
         const currentUser = auth.currentUser;
 
@@ -146,9 +145,13 @@ export const useUserStore = defineStore('user', {
       try {
         const q = query(collection(db, 'quizResults'), where('userId', '==', this.uid), orderBy('date', 'desc'));
         const snap = await getDocs(q);
-        this.setQuiz(snap.docs.map(doc => doc.data()));
-      } catch {
-        console.log('Errore recupero dati');
+        this.quizHistory = snap.docs.map(doc => ({
+          id: doc.id,
+          ...doc.data()
+        })) as QuizType[];
+      } catch (error) {
+        console.error('Errore nel recupero quiz history:', error);
+        throw new Error('Errore nel recupero quiz history');
       }
     }
   },

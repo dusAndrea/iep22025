@@ -6,8 +6,8 @@
     </v-col>
   </v-row>
   <v-row>
-    <v-col>
-      <v-card class="pa-4 mx-auto">
+    <v-col cols>
+      <v-card class="pt-4 mb-6 mx-auto">
         <v-card-text>
           <v-form @submit.prevent="handleUpdate"
             v-model="formIsValid">

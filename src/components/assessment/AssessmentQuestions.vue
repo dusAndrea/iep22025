@@ -106,6 +106,7 @@
         try {
           await questionsStore.submitAssesment(payload);
           messagesStore.showMessage('Salvataggio avvenuto correttamente', 'success');
+          await userStore.fetchQuizHistory();
         } catch (error: any) {
           messagesStore.showMessage(error, 'error');
         }

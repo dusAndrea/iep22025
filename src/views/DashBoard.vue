@@ -6,7 +6,7 @@
     </v-col>
 
     <v-col>
-      <CO2Calculator title="Emissioni di CO₂"
+      <DashboardCalculator title="Emissioni di CO₂"
         subtitle="Calcola quanta CO₂ emetti inserendo un indirizzo di partenza, uno di arrivo ed il mezzo utilizzato."
         icon="mdi-sprout-outline" />
     </v-col>
@@ -14,11 +14,11 @@
 </template>
 <script lang="ts">
   import { defineComponent } from 'vue';
-  import { CO2Calculator } from '@/components';
+  import { DashboardCalculator } from '@/components';
   export default defineComponent({
     name: 'DashBoard',
     components: {
-      CO2Calculator
+      DashboardCalculator
     },
   });
 </script>

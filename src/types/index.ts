@@ -40,9 +40,13 @@ export type QuizAnswerType = {
 };
 
 export type QuizType = {
+  id?: string;
   userId: string;
-  date: string | Timestamp;
   score: number;
-  total: number;
-  answers: QuizAnswerType[];
+  date: string;
+  questions: {
+    question: string;
+    userAnswer: string;
+    correctAnswer: string;
+  }[];
 };
